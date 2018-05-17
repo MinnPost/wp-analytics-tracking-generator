@@ -39,6 +39,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 		$this->tabs = $this->get_admin_tabs();
 
+		$this->default_tab = 'basic_settings';
+
 		$this->add_actions();
 
 	}
@@ -74,8 +76,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 	*/
 	private function get_admin_tabs() {
 		$tabs = array(
-			'tracking_code' => 'Tracking Code',
-			'page_settings' => 'Page Settings',
+			'basic_settings'     => 'Basic Settings',
+			'custom_definitions' => 'Custom Definitions',
 		); // this creates the tabs for the admin
 		return $tabs;
 	}
@@ -93,16 +95,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 			<?php
 			$tabs = $this->tabs;
-			$tab  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
+			$tab  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 			$this->render_tabs( $tabs, $tab );
 
 			switch ( $tab ) {
-				case 'staff_list':
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/staff-list.php' );
-					break;
-				case 'page_settings':
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-					break;
 				default:
 					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 					break;
@@ -127,7 +123,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
 			echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 				esc_attr( $active ),
-				esc_url( '?page=' . $this->slug . '&tab=' . $tab_key ),
+				esc_url( '?page=' . $this->slug . '-admin&tab=' . $tab_key ),
 				esc_html( $tab_caption )
 			);
 		}
@@ -148,8 +144,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 	public function admin_settings_form() {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
-		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
+		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
+		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../settings-functions.inc.php' );
 
@@ -160,19 +156,19 @@ class WP_Analytics_Tracking_Generator_Admin {
 			'link'       => 'display_link',
 		);
 
-		$this->tracking_code( 'tracking_code', 'tracking_code', $all_field_callbacks );
+		$this->basic_settings( 'basic_settings', 'basic_settings', $all_field_callbacks );
 
 	}
 
 	/**
-	* Fields for the Tracking Code tab
+	* Fields for the Basic Settings tab
 	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
 	*
 	* @param string $page
 	* @param string $section
 	* @param array $callbacks
 	*/
-	private function tracking_code( $page, $section, $callbacks ) {
+	private function basic_settings( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
 			if ( $key === $page ) {
