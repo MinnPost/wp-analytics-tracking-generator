@@ -13,6 +13,11 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', '<?php echo $property_id; ?>', 'auto');
+<?php if ( ! empty( $custom_dimensions ) ) : ?>
+	<?php foreach ( $custom_dimensions as $key => $value ) : ?>
+		ga( 'set', 'dimension<?php echo $key; ?>', '<?php echo $value; ?>' );
+	<?php endforeach; ?>
+<?php endif; ?>
 <?php if ( true !== $disable_pageview ) : ?>
 ga('send', 'pageview');
 <?php endif; ?>

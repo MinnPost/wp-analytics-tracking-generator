@@ -17,6 +17,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	protected $option_prefix;
 	protected $version;
 	protected $slug;
+	protected $settings;
 	//protected $cache;
 
 	/**
@@ -25,16 +26,23 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	* @param string $option_prefix
 	* @param string $version
 	* @param string $slug
+	* @param object $settings
 	* @throws \Exception
 	*/
-	public function __construct( $option_prefix, $version, $slug ) {
+	public function __construct( $option_prefix, $version, $slug, $settings ) {
 
 		$this->option_prefix = $option_prefix;
 		$this->version       = $version;
 		$this->slug          = $slug;
+		$this->settings      = $settings;
 		//$this->cache         = $cache;
 
 		//$this->mp_mem_transients = $this->cache->mp_mem_transients;
+
+		$this->dimension_count = get_option( $this->option_prefix . 'dimension_total_count', $this->settings->dimension_count_default );
+		if ( '' === $this->dimension_count ) {
+			$this->dimension_count = $this->settings->dimension_count_default;
+		}
 
 		$this->add_actions();
 
@@ -59,9 +67,10 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		if ( true === $show_analytics_code ) {
 			$type = get_option( $this->option_prefix . 'tracking_code_type', '' );
 			if ( '' !== $type ) {
-				$disable_pageview = get_option( $this->option_prefix . 'disable_pageview', false );
-				$disable_pageview = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
-				$property_id      = get_option( $this->option_prefix . 'property_id', '' );
+				$disable_pageview  = get_option( $this->option_prefix . 'disable_pageview', false );
+				$disable_pageview  = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
+				$property_id       = get_option( $this->option_prefix . 'property_id', '' );
+				$custom_dimensions = $this->get_custom_dimensions();
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/front-end/tracking-code-' . $type . '.php' );
 			}
 		}
@@ -90,6 +99,25 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			}
 		}
 		return $show_analytics_code;
+	}
+
+	/**
+	* Custom dimensions
+	*
+	* @return array $custom_dimensions
+	*
+	*/
+	private function get_custom_dimensions() {
+		$custom_dimensions = array();
+		$i                 = 1;
+		while ( $i <= $this->dimension_count ) {
+			$value = get_option( $this->option_prefix . 'dimension_' . $i, '' );
+			if ( '' !== $value ) {
+				$custom_dimensions[ $i ] = ${ $value };
+			}
+			$i++;
+		}
+		return $custom_dimensions;
 	}
 
 }

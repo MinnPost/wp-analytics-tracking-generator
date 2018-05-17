@@ -32,25 +32,25 @@ class WP_Analytics_Tracking_Generator {
 
 	/**
 	* @var object
-	* Load and initialize the MinnPost_Membership_Cache class
+	* Load and initialize the WP_Analytics_Tracking_Generator_Cache class
 	*/
 	//public $cache;
 
 	/**
 	* @var object
-	* Load and initialize the Staff_User_Post_List_Data class
+	* Load and initialize the WP_Analytics_Tracking_Generator_Settings class
 	*/
-	public $data;
+	public $settings;
 
 	/**
 	* @var object
-	* Load and initialize the Staff_User_Post_List_Admin class
+	* Load and initialize the WP_Analytics_Tracking_Generator_Admin class
 	*/
 	public $admin;
 
 	/**
 	* @var object
-	* Load and initialize the Staff_User_Post_List_Front_End class
+	* Load and initialize the WP_Analytics_Tracking_Generator_Front_End class
 	*/
 	public $front_end;
 
@@ -88,6 +88,8 @@ class WP_Analytics_Tracking_Generator {
 
 		// wp cache settings - can't imagine we'll need that
 		//$this->cache = $this->cache();
+		// settings outside the ui
+		$this->settings = $this->settings();
 		// admin settings
 		$this->admin = $this->admin();
 		// front end settings
@@ -117,13 +119,24 @@ class WP_Analytics_Tracking_Generator {
 	}
 
 	/**
+	 * Plugin settings
+	 *
+	 * @return object $settings
+	 */
+	public function settings() {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-settings.php' );
+		$settings = new WP_Analytics_Tracking_Generator_Settings( $this->option_prefix, $this->version, $this->slug );
+		return $settings;
+	}
+
+	/**
 	 * Plugin admin
 	 *
 	 * @return object $admin
 	 */
 	public function admin() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-admin.php' );
-		$admin = new WP_Analytics_Tracking_Generator_Admin( $this->option_prefix, $this->version, $this->slug, $this->data );
+		$admin = new WP_Analytics_Tracking_Generator_Admin( $this->option_prefix, $this->version, $this->slug, $this->settings );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 		return $admin;
 	}
@@ -135,7 +148,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function front_end() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-front-end.php' );
-		$front_end = new WP_Analytics_Tracking_Generator_Front_End( $this->option_prefix, $this->version, $this->slug, $this->data );
+		$front_end = new WP_Analytics_Tracking_Generator_Front_End( $this->option_prefix, $this->version, $this->slug, $this->settings );
 		return $front_end;
 	}
 

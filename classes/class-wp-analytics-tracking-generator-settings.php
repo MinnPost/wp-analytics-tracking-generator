@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for the WP_Analytics_Tracking_Generator_Admin class.
+ * Class file for the WP_Analytics_Tracking_Generator_Settings class.
  *
  * @file
  */
@@ -10,15 +10,13 @@ if ( ! class_exists( 'WP_Analytics_Tracking_Generator' ) ) {
 }
 
 /**
- * Create default WordPress admin functionality to configure the plugin.
+ * Store some settings that are not exposed in the interface
  */
-class WP_Analytics_Tracking_Generator_Admin {
+class WP_Analytics_Tracking_Generator_Settings {
 
 	protected $option_prefix;
 	protected $version;
 	protected $slug;
-	protected $settings;
-	//protected $cache;
 
 	/**
 	* Constructor which sets up admin pages
@@ -26,166 +24,25 @@ class WP_Analytics_Tracking_Generator_Admin {
 	* @param string $option_prefix
 	* @param string $version
 	* @param string $slug
-	* @param object $settings
 	* @throws \Exception
 	*/
-	public function __construct( $option_prefix, $version, $slug, $settings ) {
+	public function __construct( $option_prefix, $version, $slug ) {
 
 		$this->option_prefix = $option_prefix;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->settings      = $settings;
-		//$this->cache         = $cache;
 
-		//$this->mp_mem_transients = $this->cache->mp_mem_transients;
-
-		$this->tabs = $this->get_admin_tabs();
-
-		$this->default_tab = 'basic_settings';
+		$this->dimension_count_default = 20;
 
 		$this->add_actions();
 
 	}
 
 	/**
-	* Create the action hooks to create the admin page(s)
+	* Create any action hooks
 	*
 	*/
 	public function add_actions() {
-		if ( is_admin() ) {
-			add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
-			add_action( 'admin_init', array( $this, 'admin_settings_form' ) );
-			//add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
-		}
-
-	}
-
-	/**
-	* Create WordPress admin options page
-	*
-	*/
-	public function create_admin_menu() {
-		$title = __( 'Analytics Tracking', 'wp-analytics-tracking-generator' );
-		add_options_page( $title, $title, 'manage_options', $this->slug . '-admin', array( $this, 'show_admin_page' ) );
-	}
-
-
-	/**
-	* Create WordPress admin options page tabs
-	*
-	* @return array $tabs
-	*
-	*/
-	private function get_admin_tabs() {
-		$tabs = array(
-			'basic_settings'    => 'Basic Settings',
-			'custom_dimensions' => 'Custom Dimensions',
-		); // this creates the tabs for the admin
-		/*
-		 * tabs to think about adding:
-		 * events tracking
-		 *	downloads, mailto, outbound, telephone links
-		 *	affiliate links
-		 *	track fragment identifiers, hashmarks in links
-		 *	track form submit actions
-		 *	track page scrolling depth
-		 *	downloads regex
-		 *	affiliates regex
-		 * advanced tracking
-		 * 	speed sample rate / user sample rate
-		 * 	anonymize ips
-		 * 	user opt out
-		 * 	exclude users with Do Not Track header
-		 * 	enable remarketing, demographics, interests reports
-		 * 	exclude events from bounce rate and time on page calculation
-		 * 	enable enhanced link attribution
-		 * 	use hitcallback to increase event tracking accuracy
-		 * 	enable force ssl
-		 * 	enable cross domain
-		 * 	list of domains to support
-		 * 	cookie domain/name/expiration
-		 * plugins
-		 *	ecommerce
-		*/
-		return $tabs;
-	}
-
-	/**
-	* Display the admin settings page
-	*
-	* @return void
-	*/
-	public function show_admin_page() {
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-		?>
-		<div class="wrap">
-			<h1><?php _e( get_admin_page_title() , 'wp-analytics-tracking-generator' ); ?></h1>
-
-			<?php
-			$tabs = $this->tabs;
-			$tab  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
-			$this->render_tabs( $tabs, $tab );
-
-			switch ( $tab ) {
-				default:
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-					break;
-			} // End switch().
-			?>
-		</div>
-		<?php
-	}
-
-	/**
-	* Render tabs for settings pages in admin
-	* @param array $tabs
-	* @param string $tab
-	*/
-	private function render_tabs( $tabs, $tab = '' ) {
-
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-
-		$current_tab = $tab;
-		echo '<h2 class="nav-tab-wrapper">';
-		foreach ( $tabs as $tab_key => $tab_caption ) {
-			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
-				esc_attr( $active ),
-				esc_url( '?page=' . $this->slug . '-admin&tab=' . $tab_key ),
-				esc_html( $tab_caption )
-			);
-		}
-		echo '</h2>';
-
-		if ( isset( $get_data['tab'] ) ) {
-			$tab = sanitize_key( $get_data['tab'] );
-		} else {
-			$tab = '';
-		}
-	}
-
-	/**
-	* Register items for the settings api
-	* @return void
-	*
-	*/
-	public function admin_settings_form() {
-
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
-		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
-
-		require_once( plugin_dir_path( __FILE__ ) . '/../settings-functions.inc.php' );
-
-		$all_field_callbacks = array(
-			'text'       => 'display_input_field',
-			'checkboxes' => 'display_checkboxes',
-			'select'     => 'display_select',
-			'link'       => 'display_link',
-		);
-
-		$this->basic_settings( 'basic_settings', 'basic_settings', $all_field_callbacks );
-		$this->custom_dimensions( 'custom_dimensions', 'custom_dimensions', $all_field_callbacks );
 
 	}
 
@@ -321,9 +178,9 @@ class WP_Analytics_Tracking_Generator_Admin {
 		);
 
 		$i               = 1;
-		$dimension_count = get_option( $this->option_prefix . 'dimension_total_count', $this->settings->dimension_count_default );
+		$dimension_count = get_option( $this->option_prefix . 'dimension_total_count', 20 );
 		if ( '' === $dimension_count ) {
-			$dimension_count = $this->settings->dimension_count_default;
+			$dimension_count = 20;
 		}
 		while ( $i <= $dimension_count ) {
 			if ( 1 === $i ) {
