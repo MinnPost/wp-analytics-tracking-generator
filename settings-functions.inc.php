@@ -170,7 +170,7 @@ if ( ! function_exists( 'display_select' ) ) :
 		}
 		$field .= '</select>';
 		if ( '' !== $desc ) {
-			echo sprintf( '<p class="description">%1$s</p>',
+			$field .= sprintf( '<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}

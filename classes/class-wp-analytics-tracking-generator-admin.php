@@ -333,13 +333,14 @@ class WP_Analytics_Tracking_Generator_Admin {
 			}
 			$settings[ 'dimension_' . $i ] = array(
 				'title'    => __( 'Dimension ', 'wp-analytics-tracking-generator' ) . $i,
-				'callback' => $callbacks['text'],
+				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
-					'type'     => 'text',
+					'type'     => 'select',
 					'desc'     => $desc,
 					'constant' => '',
+					'items'    => $this->get_dimension_variables(),
 				),
 			);
 			$i++;
@@ -385,6 +386,25 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'id'    => $key,
 				'value' => $key,
 				'text'  => $role['name'],
+				'desc'  => '',
+			);
+		}
+		return $items;
+	}
+
+	/**
+	* Get options for custom dimension variables
+	*
+	* @return array $items
+	*/
+	private function get_dimension_variables() {
+		$items = array();
+		$vars  = $this->settings->get_dimension_variables();
+		foreach ( $vars as $key => $variable ) {
+			$items[] = array(
+				'id'    => $key,
+				'value' => $key,
+				'text'  => $variable['name'],
 				'desc'  => '',
 			);
 		}

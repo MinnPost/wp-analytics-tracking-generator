@@ -111,12 +111,17 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		$custom_dimensions = array();
 		$i                 = 1;
 		while ( $i <= $this->dimension_count ) {
-			$value = get_option( $this->option_prefix . 'dimension_' . $i, '' );
-			if ( '' !== $value ) {
-				$custom_dimensions[ $i ] = ${ $value };
+			$key    = get_option( $this->option_prefix . 'dimension_' . $i, '' );
+			$array  = $this->settings->get_dimension_variables( $key );
+			$method = isset( $array['method'] ) ? $array['method'] : '';
+			if ( '' !== $method ) {
+				$custom_dimensions[ $i ] = $method();
 			}
 			$i++;
 		}
+
+		$custom_dimensions = apply_filters( 'wp_analytics_tracking_generator_custom_dimensions', $custom_dimensions );
+
 		return $custom_dimensions;
 	}
 
