@@ -74,7 +74,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 	*/
 	private function get_admin_tabs() {
 		$tabs = array(
-			'staff_list'    => 'Staff List',
+			'tracking_code' => 'Tracking Code',
 			'page_settings' => 'Page Settings',
 		); // this creates the tabs for the admin
 		return $tabs;
@@ -93,7 +93,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 			<?php
 			$tabs = $this->tabs;
-			$tab  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'staff_list';
+			$tab  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
 			$this->render_tabs( $tabs, $tab );
 
 			switch ( $tab ) {
@@ -148,8 +148,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 	public function admin_settings_form() {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'staff_list';
-		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'staff_list';
+		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
+		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'tracking_code';
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../settings-functions.inc.php' );
 
@@ -160,20 +160,19 @@ class WP_Analytics_Tracking_Generator_Admin {
 			'link'       => 'display_link',
 		);
 
-		$this->staff_list( 'staff_list', 'staff_list', $all_field_callbacks );
-		$this->page_settings( 'page_settings', 'page_settings', $all_field_callbacks );
+		$this->tracking_code( 'tracking_code', 'tracking_code', $all_field_callbacks );
 
 	}
 
 	/**
-	* Fields for the Staff List tab
+	* Fields for the Tracking Code tab
 	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
 	*
 	* @param string $page
 	* @param string $section
 	* @param array $callbacks
 	*/
-	private function staff_list( $page, $section, $callbacks ) {
+	private function tracking_code( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
 			if ( $key === $page ) {
@@ -183,170 +182,61 @@ class WP_Analytics_Tracking_Generator_Admin {
 		add_settings_section( $page, $title, null, $page );
 
 		$settings = array(
-			'staff_user_role' => array(
-				'title'    => __( 'Staff user role', 'staff-user-post-list' ),
+			'tracking_code_type' => array(
+				'title'    => __( 'Tracking Code Type', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'select',
 					'desc'     => '',
+					'constant' => '',
+					'items'    => array(
+						'gtagjs'      => array(
+							'value' => 'gtagjs',
+							'text'  => 'gtag.js',
+						),
+						'analyticsjs' => array(
+							'value' => 'analyticsjs',
+							'text'  => 'analytics.js',
+						),
+					),
+				),
+			),
+			'property_id'        => array(
+				'title'    => __( 'Tracking ID', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_ANALYTICS_TRACKING_ID',
+				),
+			),
+			'disable_pageview'   => array(
+				'title'    => __( 'Disable pageview tracking?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => 'If you check this, the tracker will not send a pageview hit to Analytics',
+				),
+			),
+			'disable_for_roles'  => array(
+				'title'    => __( 'Disable Analytics for these roles', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['checkboxes'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'checkboxes',
+					'desc'     => 'Analytics code will not be run for these roles',
 					'constant' => '',
 					'items'    => $this->get_role_options(),
 				),
 			),
-			'post_type'       => array(
-				'title'    => __( 'Additional post type', 'staff-user-post-list' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'desc'     => '',
-					'constant' => '',
-					'items'    => $this->get_post_type_options(),
-				),
-			),
-			'post_meta_key'   => array(
-				'title'    => __( 'Post meta key', 'staff-user-post-list' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'text',
-					'desc'     => '',
-					'constant' => '',
-				),
-			),
-			'post_meta_value' => array(
-				'title'    => __( 'Post meta value', 'staff-user-post-list' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'text',
-					'desc'     => '',
-					'constant' => '',
-				),
-			),
 
-		);
-
-		foreach ( $settings as $key => $attributes ) {
-			$id       = $this->option_prefix . $key;
-			$name     = $this->option_prefix . $key;
-			$title    = $attributes['title'];
-			$callback = $attributes['callback'];
-			$page     = $attributes['page'];
-			$section  = $attributes['section'];
-			$args     = array_merge(
-				$attributes['args'],
-				array(
-					'title'     => $title,
-					'id'        => $id,
-					'label_for' => $id,
-					'name'      => $name,
-				)
-			);
-
-			// if there is a constant and it is defined, don't run a validate function if there is one
-			if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
-				$validate = '';
-			}
-
-			add_settings_field( $id, $title, $callback, $page, $section, $args );
-			register_setting( $section, $id );
-			register_setting( $section, $this->option_prefix . 'staff_ordered' );
-		}
-	}
-
-	/**
-	* Fields for the Page Settings tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param array $callbacks
-	*/
-	private function page_settings( $page, $section, $callbacks ) {
-		$tabs = $this->tabs;
-		foreach ( $tabs as $key => $value ) {
-			if ( $key === $page ) {
-				$title = $value;
-			}
-		}
-		add_settings_section( $page, $title, null, $page );
-
-		$settings = array(
-			'image_size'   => array(
-				'title'    => __( 'Image size', 'staff-user-post-list' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'desc'     => '',
-					'constant' => '',
-					'items'    => $this->get_image_sizes(),
-				),
-			),
-			'include_bio'  => array(
-				'title'    => __( 'Include bio?', 'staff-user-post-list' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'checkbox',
-					'desc'     => '',
-					'constant' => '',
-				),
-			),
-			'bio_field'    => array(
-				'title'    => __( 'Bio field', 'staff-user-post-list' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'desc'     => '',
-					'constant' => '',
-					'items'    => $this->get_staff_fields(),
-				),
-			),
-			'include_name' => array(
-				'title'    => __( 'Include name?', 'staff-user-post-list' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'checkbox',
-					'desc'     => '',
-					'constant' => '',
-				),
-			),
-			'name_field'   => array(
-				'title'    => __( 'Name field', 'staff-user-post-list' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'desc'     => '',
-					'constant' => '',
-					'items'    => $this->get_staff_fields(),
-				),
-			),
-			'method'       => array(
-				'title'    => __( 'Custom theme method name', 'staff-user-post-list' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'text',
-					'desc'     => __( 'If you add a method here, it will receive the $id, $image_size, $include_bio, and $include_name values.', 'staff-user-post-list' ),
-					'constant' => '',
-				),
-			),
 		);
 
 		foreach ( $settings as $key => $attributes ) {
@@ -386,74 +276,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 		$roles = get_editable_roles();
 		foreach ( $roles as $key => $role ) {
 			$items[] = array(
+				'id'    => $key,
 				'value' => $key,
 				'text'  => $role['name'],
-			);
-		}
-		return $items;
-	}
-
-	/**
-	* WordPress post types as setting field options
-	*
-	* @return array $items
-	*/
-	private function get_post_type_options() {
-		$items = array();
-		$types = get_post_types();
-		foreach ( $types as $post_type ) {
-			$items[] = array(
-				'value' => $post_type,
-				'text'  => $post_type,
-			);
-		}
-		return $items;
-	}
-
-	/**
-	* WordPress image sizes as setting field options
-	*
-	* @return array $items
-	*/
-	private function get_image_sizes() {
-		$items = array();
-		$sizes = get_intermediate_image_sizes();
-		foreach ( $sizes as $image_size ) {
-			$items[] = array(
-				'value' => $image_size,
-				'text'  => $image_size,
-			);
-		}
-		return $items;
-	}
-
-	/**
-	* Fields for the staff type as setting field options
-	*
-	* @return array $items
-	*/
-	private function get_staff_fields() {
-		$items = array();
-
-		global $wpdb;
-
-		$role = get_option( $this->option_prefix . 'staff_user_role', '' );
-		if ( '' !== $role ) {
-			$select = "SELECT DISTINCT $wpdb->usermeta.meta_key FROM $wpdb->usermeta";
-		}
-
-		$post_type = get_option( $this->option_prefix . 'post_type', '' );
-
-		if ( '' !== $post_type ) {
-			$select = "SELECT DISTINCT $wpdb->postmeta.meta_key FROM $wpdb->postmeta";
-		}
-
-		$meta = $wpdb->get_results( $select, ARRAY_A );
-
-		foreach ( $meta as $field ) {
-			$items[] = array(
-				'value' => $field['meta_key'],
-				'text'  => $field['meta_key'],
+				'desc'  => '',
 			);
 		}
 		return $items;
