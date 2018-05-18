@@ -16,5 +16,17 @@
 	<?php else : ?>
 	gtag('config', '<?php echo $property_id; ?>', { 'send_page_view': false });
 	<?php endif; ?>
+	<?php if ( ! empty( $custom_dimensions ) ) : ?>
+		gtag( 'set', {
+			<?php foreach ( $custom_dimensions as $key => $value ) : ?>
+				<?php if ( ! next( $custom_dimensions ) ) : ?>
+					'dimension<?php echo $key; ?>': '<?php echo $value; ?>'
+				<?php else : ?>
+					'dimension<?php echo $key; ?>': '<?php echo $value; ?>',
+				<?php endif; ?>
+			<?php endforeach; ?>
+		});
+	<?php endif; ?>
+	<?php if ( true !== $disable_pageview ) : ?>
 </script>
 <!-- End WP Analytics Tracking Generator gtag.js code -->
