@@ -86,12 +86,26 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	*/
 	public function scripts_and_styles() {
 		wp_enqueue_script( $this->slug . '-front-end', plugins_url( '../assets/js/' . $this->slug . '-front-end.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
-		//$minnpost_membership_data = $this->get_user_membership_info();
-		//wp_localize_script( $this->slug . '-front-end', 'minnpost_membership_data', $minnpost_membership_data );
-		/*wp_add_inline_script( $this->slug . '-front-end', "
-			jQuery(document).ready(function ($) {
-				$('.m-form-membership').minnpostMembership();
-			});" );*/
+
+		$settings = array();
+
+		// scroll depth settings
+		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $scroll_enabled ) {
+			$settings['scroll'] = array(
+				'enabled'         => $scroll_enabled,
+				'minimum_height'  => ( '' !== get_option( $this->option_prefix . 'minimum_height', 0 ) ) ? get_option( $this->option_prefix . 'minimum_height', 0 ) : 0,
+				'percentage'      => ( '' !== get_option( $this->option_prefix . 'track_scroll_percentage', true ) ) ? get_option( $this->option_prefix . 'track_scroll_percentage', true ) : true,
+				'user_timing'     => ( '' !== get_option( $this->option_prefix . 'track_user_timing', true ) ) ? get_option( $this->option_prefix . 'track_user_timing', true ) : true,
+				'pixel_depth'     => ( '' !== get_option( $this->option_prefix . 'track_pixel_depth', true ) ) ? get_option( $this->option_prefix . 'track_pixel_depth', true ) : true,
+				'non_interaction' => ( '' !== get_option( $this->option_prefix . 'non_interaction', true ) ) ? get_option( $this->option_prefix . 'non_interaction', true ) : true,
+			);
+			if ( ! empty( get_option( $this->option_prefix . 'scroll_depth_elements', array() ) ) ) {
+				$settings['scroll']['scroll_elements'] = get_option( $this->option_prefix . 'scroll_depth_elements', array() );
+			}
+		}
+
+		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
 		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( '../assets/css/' . $this->slug . '-front-end.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
