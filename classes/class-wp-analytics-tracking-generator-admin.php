@@ -55,7 +55,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
 			add_action( 'admin_init', array( $this, 'admin_settings_form' ) );
-			//add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
 		}
 
 	}
@@ -193,6 +193,16 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
+	* Admin styles. Load the CSS and/or JavaScript for the plugin's settings
+	*
+	* @return void
+	*/
+	public function admin_scripts_and_styles() {
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( '../assets/js/' . $this->slug . '-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		//wp_enqueue_style( $this->slug . '-admin', plugins_url( '../assets/css/' . $this->slug . '-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
+	}
+
+	/**
 	* Fields for the Basic Settings tab
 	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
 	*
@@ -265,6 +275,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 			$callback = $attributes['callback'];
 			$page     = $attributes['page'];
 			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : 'wp-analytics-generator-field ' . $id;
 			$args     = array_merge(
 				$attributes['args'],
 				array(
@@ -272,6 +283,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'id'        => $id,
 					'label_for' => $id,
 					'name'      => $name,
+					'class'     => $class,
 				)
 			);
 
@@ -308,6 +320,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-track-page-scroll-toggle',
 				'args'     => array(
 					'type' => 'checkbox',
 					'desc' => '',
@@ -318,6 +331,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-minimum-height',
 				'args'     => array(
 					'type'     => 'text',
 					'desc'     => 'Enter a pixel height for pages if applicable. Otherwise, 0 is the default.',
@@ -329,6 +343,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['textarea'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-scroll-depth-elements',
 				'args'     => array(
 					'desc' => 'Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas.',
 					'rows' => 5,
@@ -340,6 +355,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-percentage',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will cause the plugin to only track the elements above.',
@@ -351,6 +367,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-timing',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will turn off User Timing events.',
@@ -362,6 +379,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-pixel-depth',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will turn off Pixel Depth events.',
@@ -373,6 +391,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-non-interaction',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Scroll events will not impact bounce rate if this value is true.',
@@ -389,6 +408,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 			$callback = $attributes['callback'];
 			$page     = $attributes['page'];
 			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : 'wp-analytics-generator-field ' . $id;
 			$args     = array_merge(
 				$attributes['args'],
 				array(
@@ -396,6 +416,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'id'        => $id,
 					'label_for' => $id,
 					'name'      => $name,
+					'class'     => $class,
 				)
 			);
 
@@ -471,6 +492,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 			$callback = $attributes['callback'];
 			$page     = $attributes['page'];
 			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : 'wp-analytics-generator-field ' . $id;
 			$args     = array_merge(
 				$attributes['args'],
 				array(
@@ -478,6 +500,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'id'        => $id,
 					'label_for' => $id,
 					'name'      => $name,
+					'class'     => $class,
 				)
 			);
 
