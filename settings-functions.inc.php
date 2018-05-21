@@ -146,7 +146,7 @@ if ( ! function_exists( 'display_select' ) ) :
 		$name = $args['name'];
 		$desc = $args['desc'];
 
-		$current_value = get_option( $name );
+		$current_value = get_option( $name, '' );
 
 		$field .= sprintf( '<div class="select"><select id="%1$s" name="%2$s"><option value="">- Select one -</option>',
 			esc_attr( $id ),
@@ -154,15 +154,26 @@ if ( ! function_exists( 'display_select' ) ) :
 		);
 
 		foreach ( $args['items'] as $key => $value ) {
-			$text     = $value['text'];
-			$value    = $value['value'];
+			$text = $value['text'];
+
+			if ( isset( $value['value'] ) ) {
+				$item_value = $value['value'];
+			} else {
+				$item_value = $key;
+			}
+
 			$selected = '';
-			if ( $key === $current_value || $value === $current_value ) {
+
+			if ( isset( $current_value ) && $item_value === $current_value ) {
 				$selected = ' selected';
+			} elseif ( '' === $current_value ) {
+				if ( isset( $value['default'] ) && true === $value['default'] ) {
+					$selected = ' selected';
+				}
 			}
 
 			$field .= sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-				esc_attr( $value ),
+				esc_attr( $item_value ),
 				esc_attr( $selected ),
 				esc_html( $text )
 			);
@@ -177,6 +188,53 @@ if ( ! function_exists( 'display_select' ) ) :
 		$field .= '</div>';
 
 		echo $field;
+	}
+endif;
+
+/**
+* Display for a textarea
+*
+* @param array $args
+*/
+if ( ! function_exists( 'display_textarea' ) ) :
+	function display_textarea( $args ) {
+		$id    = $args['label_for'];
+		$name  = $args['name'];
+		$desc  = $args['desc'];
+		$rows  = $args['rows'];
+		$cols  = $args['cols'];
+		$class = 'regular-text';
+
+		$value = esc_attr( get_option( $id, '' ) );
+		if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
+			$value = $args['default'];
+		}
+
+		if ( '' !== $rows ) {
+			$rows_attr = ' rows="' . esc_attr( $rows ) . '"';
+		} else {
+			$rows_attr = '';
+		}
+
+		if ( '' !== $cols ) {
+			$cols_attr = ' cols="' . esc_attr( $cols ) . '"';
+		} else {
+			$cols_attr = '';
+		}
+
+		echo sprintf( '<textarea name="%1$s" id="%2$s" class="%3$s"%4$s%5$s>%6$s</textarea>',
+			esc_attr( $name ),
+			esc_attr( $id ),
+			sanitize_html_class( $class . esc_html( ' code' ) ),
+			$rows_attr,
+			$cols_attr,
+			esc_attr( $value )
+		);
+		if ( '' !== $desc ) {
+			echo sprintf( '<p class="description">%1$s</p>',
+				esc_html( $desc )
+			);
+		}
 	}
 endif;
 
