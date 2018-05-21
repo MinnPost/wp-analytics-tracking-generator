@@ -216,16 +216,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'type'     => 'select',
 					'desc'     => '',
 					'constant' => '',
-					'items'    => array(
-						'gtagjs'      => array(
-							'value' => 'gtagjs',
-							'text'  => 'gtag.js',
-						),
-						'analyticsjs' => array(
-							'value' => 'analyticsjs',
-							'text'  => 'analytics.js',
-						),
-					),
+					'items'    => $this->get_tracker_options(),
 				),
 			),
 			'property_id'        => array(
@@ -371,6 +362,25 @@ class WP_Analytics_Tracking_Generator_Admin {
 			add_settings_field( $id, $title, $callback, $page, $section, $args );
 			register_setting( $section, $id );
 		}
+	}
+
+	/**
+	* Analytics trackers as setting field options
+	*
+	* @return array $items
+	*/
+	private function get_tracker_options() {
+		$items    = array();
+		$trackers = $this->settings->get_analytics_tracker_types();
+		foreach ( $trackers as $key => $tracker ) {
+			$items[] = array(
+				'id'    => $key,
+				'value' => $key,
+				'text'  => $tracker['name'],
+				'desc'  => '',
+			);
+		}
+		return $items;
 	}
 
 	/**

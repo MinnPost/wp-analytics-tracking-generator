@@ -38,7 +38,41 @@ class WP_Analytics_Tracking_Generator_Settings {
 	}
 
 	/**
+	* Types of analytics trackers, and what they support
+	*
+	* @param string $key
+	* @return array $tracker_types
+	*
+	*/
+	public function get_analytics_tracker_types( $key = '' ) {
+		$tracker_types = array(
+			'analyticsjs' => array(
+				'name'     => 'analytics.js',
+				'supports' => array(
+					'plugins'    => true,
+					'events'     => true,
+					'dimensions' => true,
+					'metrics'    => true,
+				),
+			),
+			'gtagjs'      => array(
+				'name'     => 'gtag.js',
+				'supports' => array(
+					'plugins'    => false,
+					'events'     => true,
+					'dimensions' => true,
+					'metrics'    => true,
+				),
+			),
+		);
+		return $tracker_types;
+	}
+
+	/**
 	* Variables we support for custom dimensions
+	*
+	* @param string $key
+	* @return array $dimension_variables
 	*
 	*/
 	public function get_dimension_variables( $key = '' ) {
