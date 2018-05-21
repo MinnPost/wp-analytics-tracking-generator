@@ -56,6 +56,9 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		if ( ! is_admin() ) {
 			add_action( 'wp_head', array( $this, 'output_tracking_code' ), 99 );
 		}
+		if ( ! is_admin() ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
+		}
 	}
 
 	/**
@@ -74,6 +77,22 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/front-end/tracking-code-' . $type . '.php' );
 			}
 		}
+	}
+
+	/**
+	* Front end styles. Load the CSS and/or JavaScript
+	*
+	* @return void
+	*/
+	public function scripts_and_styles() {
+		wp_enqueue_script( $this->slug . '-front-end', plugins_url( '../assets/js/' . $this->slug . '-front-end.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		//$minnpost_membership_data = $this->get_user_membership_info();
+		//wp_localize_script( $this->slug . '-front-end', 'minnpost_membership_data', $minnpost_membership_data );
+		/*wp_add_inline_script( $this->slug . '-front-end', "
+			jQuery(document).ready(function ($) {
+				$('.m-form-membership').minnpostMembership();
+			});" );*/
+		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( '../assets/css/' . $this->slug . '-front-end.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
 	/**
