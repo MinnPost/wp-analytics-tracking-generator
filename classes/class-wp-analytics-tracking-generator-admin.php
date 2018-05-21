@@ -79,6 +79,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 	private function get_admin_tabs() {
 		$tabs = array(
 			'basic_settings'    => 'Basic Settings',
+			'event_tracking'    => 'Event Tracking',
 			'custom_dimensions' => 'Custom Dimensions',
 		); // this creates the tabs for the admin
 		/*
@@ -181,10 +182,12 @@ class WP_Analytics_Tracking_Generator_Admin {
 			'text'       => 'display_input_field',
 			'checkboxes' => 'display_checkboxes',
 			'select'     => 'display_select',
+			'textarea'   => 'display_textarea',
 			'link'       => 'display_link',
 		);
 
 		$this->basic_settings( 'basic_settings', 'basic_settings', $all_field_callbacks );
+		$this->event_tracking( 'event_tracking', 'event_tracking', $all_field_callbacks );
 		$this->custom_dimensions( 'custom_dimensions', 'custom_dimensions', $all_field_callbacks );
 
 	}
@@ -250,6 +253,130 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc'     => 'Analytics code will not be run for these roles',
 					'constant' => '',
 					'items'    => $this->get_role_options(),
+				),
+			),
+
+		);
+
+		foreach ( $settings as $key => $attributes ) {
+			$id       = $this->option_prefix . $key;
+			$name     = $this->option_prefix . $key;
+			$title    = $attributes['title'];
+			$callback = $attributes['callback'];
+			$page     = $attributes['page'];
+			$section  = $attributes['section'];
+			$args     = array_merge(
+				$attributes['args'],
+				array(
+					'title'     => $title,
+					'id'        => $id,
+					'label_for' => $id,
+					'name'      => $name,
+				)
+			);
+
+			// if there is a constant and it is defined, don't run a validate function if there is one
+			if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
+				$validate = '';
+			}
+
+			add_settings_field( $id, $title, $callback, $page, $section, $args );
+			register_setting( $section, $id );
+		}
+	}
+
+	/**
+	* Fields for the Event Tracking tab
+	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	*
+	* @param string $page
+	* @param string $section
+	* @param array $callbacks
+	*/
+	private function event_tracking( $page, $section, $callbacks ) {
+		$tabs = $this->tabs;
+		foreach ( $tabs as $key => $value ) {
+			if ( $key === $page ) {
+				$title = $value;
+			}
+		}
+		add_settings_section( $page, $title, null, $page );
+
+		$settings = array(
+			'track_scroll_depth'      => array(
+				'title'    => __( 'Track page scroll depth?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'minimum_height'          => array(
+				'title'    => __( 'Minimum height', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => 'Enter a pixel height for pages if applicable. Otherwise, 0 is the default.',
+					'constant' => '',
+				),
+			),
+			'scroll_depth_elements'   => array(
+				'title'    => __( 'Scroll depth elements', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['textarea'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'desc' => 'Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas.',
+					'rows' => 5,
+					'cols' => '',
+				),
+			),
+			'track_scroll_percentage' => array(
+				'title'    => __( 'Track scroll percentage?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['select'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'  => 'select',
+					'desc'  => 'Setting this to false will cause the plugin to only track the elements above.',
+					'items' => $this->get_true_false_select( 'true' ),
+				),
+			),
+			'track_user_timing'       => array(
+				'title'    => __( 'Track user timing?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['select'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'  => 'select',
+					'desc'  => 'Setting this to false will turn off User Timing events.',
+					'items' => $this->get_true_false_select( 'true' ),
+				),
+			),
+			'track_pixel_depth'       => array(
+				'title'    => __( 'Track pixel depth?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['select'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'  => 'select',
+					'desc'  => 'Setting this to false will turn off Pixel Depth events.',
+					'items' => $this->get_true_false_select( 'true' ),
+				),
+			),
+			'non_interaction'         => array(
+				'title'    => __( 'Use nonInteraction?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['select'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'  => 'select',
+					'desc'  => 'Scroll events will not impact bounce rate if this value is true.',
+					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
 
@@ -362,6 +489,37 @@ class WP_Analytics_Tracking_Generator_Admin {
 			add_settings_field( $id, $title, $callback, $page, $section, $args );
 			register_setting( $section, $id );
 		}
+	}
+
+	/**
+	* Reusable <select> items with true and false, to mirror jquery settings
+	*
+	* @param string $default
+	* @return array $items
+	*/
+	private function get_true_false_select( $default = '' ) {
+		$items = array(
+			'true'  => array(
+				'id'    => 'true',
+				'value' => 'true',
+				'text'  => 'true',
+				'desc'  => '',
+			),
+			'false' => array(
+				'id'    => 'false',
+				'value' => 'false',
+				'text'  => 'false',
+				'desc'  => '',
+			),
+		);
+
+		foreach ( $items as $key => $value ) {
+			if ( $default === $key ) {
+				$items[ $key ]['default'] = true;
+			}
+		}
+
+		return $items;
 	}
 
 	/**
