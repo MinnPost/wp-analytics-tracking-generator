@@ -1,29 +1,37 @@
 (function($){
 
-	function toggleScrollFields( parent ) {
+	function toggleEventFields( parent, type, heading ) {
 		var $toggle = $('input[type="checkbox"]', $(parent) );
 
-		$( '.wp-analytics-generator-field' ).wrapAll( '<tr class="wp-analytics-generator-fields-wrap"><td colspan="2"><table />');
-		$( '.wp-analytics-generator-fields-wrap' ).hide();
-		$( '.wp-analytics-generator-fields-wrap table' ).before( '<h3>Scroll depth settings</h3>' );
+		$( '.wp-analytics-generator-field-' + type ).wrapAll( '<tr class="wp-analytics-generator-fields-' + type + '-wrap"><td colspan="2"><table />');
+		$( '.wp-analytics-generator-fields-' + type + '-wrap' ).hide();
+		if ( '' !== heading ) {
+			$( '.wp-analytics-generator-fields-' + type + '-wrap table' ).before( '<h3>' + heading + '</h3>' );
+		}
 
 		if ($toggle.is(':checked')) {
-			$( '.wp-analytics-generator-fields-wrap' ).show();
+			$( '.wp-analytics-generator-fields-' + type + '-wrap' ).show();
 		}
 		$toggle.on('click', function(e) {
 			var checkbox = $(this);
 
-			$( '.wp-analytics-generator-fields-wrap' ).hide();
+			$( '.wp-analytics-generator-fields-' + type + '-wrap' ).hide();
 
 			if (checkbox.is(':checked')) {
-				$( '.wp-analytics-generator-fields-wrap' ).show();
+				$( '.wp-analytics-generator-fields-' + type + '-wrap' ).show();
 			}
 		});
 	}
 
 	$(document).ready(function() {
 		if ( $('.wp-analytics-generator-field-track-page-scroll-toggle').length > 0 ) {
-			toggleScrollFields( '.wp-analytics-generator-field-track-page-scroll-toggle' );
+			toggleEventFields( '.wp-analytics-generator-field-track-page-scroll-toggle', 'scroll', 'Scroll depth settings' );
+		}
+		if ( $('.wp-analytics-generator-field-track-special').length > 0 ) {
+			toggleEventFields( '.wp-analytics-generator-field-track-special', 'special', '' );
+		}
+		if ( $('.wp-analytics-generator-field-track-affiliate').length > 0 ) {
+			toggleEventFields( '.wp-analytics-generator-field-track-affiliate', 'affiliate', '' );
 		}
 	});
 

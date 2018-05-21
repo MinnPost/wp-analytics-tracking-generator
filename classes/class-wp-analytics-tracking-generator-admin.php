@@ -331,7 +331,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-minimum-height',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-minimum-height',
 				'args'     => array(
 					'type'     => 'text',
 					'desc'     => 'Enter a pixel height for pages if applicable. Otherwise, 0 is the default.',
@@ -343,7 +343,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['textarea'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-scroll-depth-elements',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-depth-elements',
 				'args'     => array(
 					'desc' => 'Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas.',
 					'rows' => 5,
@@ -355,7 +355,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-percentage',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-percentage',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will cause the plugin to only track the elements above.',
@@ -367,7 +367,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-timing',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-timing',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will turn off User Timing events.',
@@ -379,7 +379,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-track-pixel-depth',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-pixel-depth',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Setting this to false will turn off Pixel Depth events.',
@@ -391,7 +391,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field wp-analytics-generator-field-non-interaction',
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-non-interaction',
 				'args'     => array(
 					'type'  => 'select',
 					'desc'  => 'Scroll events will not impact bounce rate if this value is true.',
@@ -414,7 +414,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field-download-regex',
+				'class'    => 'wp-analytics-generator-field-special wp-analytics-generator-field-download-regex',
 				'args'     => array(
 					'type'     => 'text',
 					'desc'     => '',
@@ -437,7 +437,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field-affiliate-regex',
+				'class'    => 'wp-analytics-generator-field-affiliate wp-analytics-generator-field-affiliate-regex',
 				'args'     => array(
 					'type'     => 'text',
 					'desc'     => '',
