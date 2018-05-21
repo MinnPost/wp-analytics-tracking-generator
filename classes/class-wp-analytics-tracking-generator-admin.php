@@ -398,7 +398,74 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
-
+			'track_special_links'     => array(
+				'title'    => __( 'Track downloads, mailto, telephone, outbound links?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-track-special',
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'download_regex'          => array(
+				'title'    => __( 'Download regex', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-download-regex',
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => '',
+				),
+			),
+			'track_affiliate_links'   => array(
+				'title'    => __( 'Track affiliate links?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-track-affiliate',
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'affiliate_regex'         => array(
+				'title'    => __( 'Affiliate regex', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-affiliate-regex',
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => '',
+				),
+			),
+			'track_fragment_links'    => array(
+				'title'    => __( 'Track fragment links?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-track-fragment',
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'track_form_submissions'  => array(
+				'title'    => __( 'Track form submissions?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-track-form-submissions',
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
 		);
 
 		foreach ( $settings as $key => $attributes ) {
