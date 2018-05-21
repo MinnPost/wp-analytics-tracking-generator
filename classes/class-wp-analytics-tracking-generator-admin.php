@@ -81,30 +81,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 			'basic_settings'    => 'Basic Settings',
 			'event_tracking'    => 'Event Tracking',
 			'custom_dimensions' => 'Custom Dimensions',
+			'advanced_settings' => 'Advanced Settings',
 		); // this creates the tabs for the admin
 		/*
 		 * tabs to think about adding:
-		 * events tracking
-		 *	downloads, mailto, outbound, telephone links
-		 *	affiliate links
-		 *	track fragment identifiers, hashmarks in links
-		 *	track form submit actions
-		 *	track page scrolling depth
-		 *	downloads regex
-		 *	affiliates regex
-		 * advanced tracking
-		 * 	speed sample rate / user sample rate
-		 * 	anonymize ips
-		 * 	user opt out
-		 * 	exclude users with Do Not Track header
-		 * 	enable remarketing, demographics, interests reports
-		 * 	exclude events from bounce rate and time on page calculation
-		 * 	enable enhanced link attribution
-		 * 	use hitcallback to increase event tracking accuracy
-		 * 	enable force ssl
-		 * 	enable cross domain
-		 * 	list of domains to support
-		 * 	cookie domain/name/expiration
 		 * plugins
 		 *	ecommerce
 		*/
@@ -189,6 +169,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 		$this->basic_settings( 'basic_settings', 'basic_settings', $all_field_callbacks );
 		$this->event_tracking( 'event_tracking', 'event_tracking', $all_field_callbacks );
 		$this->custom_dimensions( 'custom_dimensions', 'custom_dimensions', $all_field_callbacks );
+		$this->advanced_settings( 'advanced_settings', 'advanced_settings', $all_field_callbacks );
 
 	}
 
@@ -551,6 +532,149 @@ class WP_Analytics_Tracking_Generator_Admin {
 			);
 			$i++;
 		}
+
+		foreach ( $settings as $key => $attributes ) {
+			$id       = $this->option_prefix . $key;
+			$name     = $this->option_prefix . $key;
+			$title    = $attributes['title'];
+			$callback = $attributes['callback'];
+			$page     = $attributes['page'];
+			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : 'wp-analytics-generator-field ' . $id;
+			$args     = array_merge(
+				$attributes['args'],
+				array(
+					'title'     => $title,
+					'id'        => $id,
+					'label_for' => $id,
+					'name'      => $name,
+					'class'     => $class,
+				)
+			);
+
+			// if there is a constant and it is defined, don't run a validate function if there is one
+			if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
+				$validate = '';
+			}
+
+			add_settings_field( $id, $title, $callback, $page, $section, $args );
+			register_setting( $section, $id );
+		}
+	}
+
+	/**
+	* Fields for the Advanced Settings tab
+	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	*
+	* @param string $page
+	* @param string $section
+	* @param array $callbacks
+	* things to track here:
+	* speed sample rate / user sample rate
+	* anonymize ips
+	* user opt out
+	* exclude users with Do Not Track header
+	* enable remarketing, demographics, interests reports
+	* exclude events from bounce rate and time on page calculation
+	* enable enhanced link attribution
+	* use hitcallback to increase event tracking accuracy
+	* enable force ssl
+	* enable cross domain
+	* list of domains to support
+	* cookie domain/name/expiration
+	*/
+	private function advanced_settings( $page, $section, $callbacks ) {
+		$tabs = $this->tabs;
+		foreach ( $tabs as $key => $value ) {
+			if ( $key === $page ) {
+				$title = $value;
+			}
+		}
+		add_settings_section( $page, $title, null, $page );
+
+		$settings = array(
+			'speed_sample_rate'                => array(
+				'title'    => __( 'Speed sample rate percentage', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => 'If empty, the default is 1',
+					'constant' => '',
+				),
+			),
+			'user_sample_rate'                 => array(
+				'title'    => __( 'User sample rate percentage', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'text',
+					'desc' => 'If empty, the default is 100',
+				),
+			),
+			'exclude_do_not_track'             => array(
+				'title'    => __( 'Exclude users with Do Not Track header?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'enable_extra_reports'             => array(
+				'title'    => __( 'Enable remarketing, demographics, interest reports?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'exclude_events_bounce'            => array(
+				'title'    => __( 'Exclude events from bounce-rate and time on page?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'enable_enhanced_link_attribution' => array(
+				'title'    => __( 'Enable enhanced link attribution?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'use_hitcallback'                  => array(
+				'title'    => __( 'Use hitCallback to increase event accuracy?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'enable_force_ssl'                 => array(
+				'title'    => __( 'Enable Force SSL?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+		);
 
 		foreach ( $settings as $key => $attributes ) {
 			$id       = $this->option_prefix . $key;
