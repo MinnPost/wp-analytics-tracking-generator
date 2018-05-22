@@ -109,12 +109,33 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		$special_links_enabled = filter_var( get_option( $this->option_prefix . 'track_special_links', false ), FILTER_VALIDATE_BOOLEAN );
 		if ( true === $special_links_enabled ) {
 			$settings['special'] = array(
-				'enabled'            => $special_links_enabled,
-				'download_regex'     => ( '' !== get_option( $this->option_prefix . 'download_regex', '' ) ) ? get_option( $this->option_prefix . 'download_regex', '' ) : '',
-				'track_affiliates'   => ( '' !== get_option( $this->option_prefix . 'track_affiliates', false ) ) ? get_option( $this->option_prefix . 'track_affiliates', false ) : false,
-				'affiliate_regex'    => ( '' !== get_option( $this->option_prefix . 'affiliate_regex', '' ) ) ? get_option( $this->option_prefix . 'affiliate_regex', '' ) : '',
-				'track_fragments'    => ( '' !== get_option( $this->option_prefix . 'track_fragments', false ) ) ? get_option( $this->option_prefix . 'track_fragments', false ) : false,
-				'track_form_submits' => ( '' !== get_option( $this->option_prefix . 'track_form_submits', false ) ) ? get_option( $this->option_prefix . 'track_form_submits', false ) : false,
+				'enabled'        => $special_links_enabled,
+				'download_regex' => ( '' !== get_option( $this->option_prefix . 'download_regex', '' ) ) ? get_option( $this->option_prefix . 'download_regex', '' ) : '',
+			);
+		}
+
+		// affiliate links
+		$affiliate_links_enabled = filter_var( get_option( $this->option_prefix . 'track_affiliates', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $affiliate_links_enabled ) {
+			$settings['affiliate'] = array(
+				'enabled'         => $affiliate_links_enabled,
+				'affiliate_regex' => ( '' !== get_option( $this->option_prefix . 'affiliate_regex', '' ) ) ? get_option( $this->option_prefix . 'affiliate_regex', '' ) : '',
+			);
+		}
+
+		// fragment links
+		$fragment_links_enabled = filter_var( get_option( $this->option_prefix . 'track_fragment_links', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $fragment_links_enabled ) {
+			$settings['fragment'] = array(
+				'enabled' => $fragment_links_enabled,
+			);
+		}
+
+		// form submits
+		$form_submits_enabled = filter_var( get_option( $this->option_prefix . 'track_form_submits', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $form_submits_enabled ) {
+			$settings['form_submits'] = array(
+				'enabled' => $form_submits_enabled,
 			);
 		}
 
