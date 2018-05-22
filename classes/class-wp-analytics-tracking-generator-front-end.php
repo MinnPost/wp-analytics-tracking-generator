@@ -105,6 +105,19 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			}
 		}
 
+		// special links
+		$special_links_enabled = filter_var( get_option( $this->option_prefix . 'track_special_links', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $special_links_enabled ) {
+			$settings['special'] = array(
+				'enabled'            => $special_links_enabled,
+				'download_regex'     => ( '' !== get_option( $this->option_prefix . 'download_regex', '' ) ) ? get_option( $this->option_prefix . 'download_regex', '' ) : '',
+				'track_affiliates'   => ( '' !== get_option( $this->option_prefix . 'track_affiliates', false ) ) ? get_option( $this->option_prefix . 'track_affiliates', false ) : false,
+				'affiliate_regex'    => ( '' !== get_option( $this->option_prefix . 'affiliate_regex', '' ) ) ? get_option( $this->option_prefix . 'affiliate_regex', '' ) : '',
+				'track_fragments'    => ( '' !== get_option( $this->option_prefix . 'track_fragments', false ) ) ? get_option( $this->option_prefix . 'track_fragments', false ) : false,
+				'track_form_submits' => ( '' !== get_option( $this->option_prefix . 'track_form_submits', false ) ) ? get_option( $this->option_prefix . 'track_form_submits', false ) : false,
+			);
+		}
+
 		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
 		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( '../assets/css/' . $this->slug . '-front-end.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
