@@ -97,15 +97,13 @@
 			}
 		}
 
-		// form submits
-		if ( 'undefined' !== typeof analytics_tracking_settings.form_submits && true === analytics_tracking_settings.form_submits.enabled ) {
+		// basic form submits
+		if ( 'undefined' !== typeof analytics_tracking_settings.form_submissions && true === analytics_tracking_settings.form_submissions.enabled ) {
 			$( 'input[type="submit"], button[type="submit"]' ).click( function( f ) {
-	            var d = this;
-	            var b = d.getAttribute("data-vars-ga-category") || "form";
-	            var c = d.getAttribute("data-vars-ga-action") || "submit";
-	            var a = d.getAttribute("data-vars-ga-label") || d.name || d.value;
-	            gadwp_send_event(b, c, a, false)
-	            wp_analytics_tracking_event( 'event', 'Form', 'Submit', this.href );
+	            var category = $( this ).data( 'ga-category' ) || 'Form';
+	            var action = $( this ).data( 'ga-action' ) || 'Submit';
+	            var label = $( this ).data( 'ga-label' ) || this.name || this.value;
+	            wp_analytics_tracking_event( 'event', category, action, label );
 	        });
 		}
 

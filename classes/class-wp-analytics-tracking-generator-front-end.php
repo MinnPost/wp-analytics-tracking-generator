@@ -132,9 +132,9 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		}
 
 		// form submits
-		$form_submits_enabled = filter_var( get_option( $this->option_prefix . 'track_form_submits', false ), FILTER_VALIDATE_BOOLEAN );
+		$form_submits_enabled = filter_var( get_option( $this->option_prefix . 'track_form_submissions', false ), FILTER_VALIDATE_BOOLEAN );
 		if ( true === $form_submits_enabled ) {
-			$settings['form_submits'] = array(
+			$settings['form_submissions'] = array(
 				'enabled' => $form_submits_enabled,
 			);
 		}
