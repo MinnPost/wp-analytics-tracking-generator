@@ -91,9 +91,12 @@
 		}
 
 		// link fragments as pageviews
+		// does not use the event tracking method
 		if ( 'undefined' !== typeof analytics_tracking_settings.fragment && true === analytics_tracking_settings.fragment.enabled ) {
-			window.onhashchange = function() {
-				ga( 'send', 'pageview', location.pathname + location.search + location.hash );
+			if ( typeof ga !== 'undefined' ) {
+				window.onhashchange = function() {
+					ga( 'send', 'pageview', location.pathname + location.search + location.hash );
+				}
 			}
 		}
 
