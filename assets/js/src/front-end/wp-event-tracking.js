@@ -93,7 +93,7 @@
 		// link fragments as pageviews
 		if ( 'undefined' !== typeof analytics_tracking_settings.fragment && true === analytics_tracking_settings.fragment.enabled ) {
 			window.onhashchange = function() {
-				wp_analytics_tracking_event( 'pageview', location.pathname + location.search + location.hash );
+				ga( 'send', 'pageview', location.pathname + location.search + location.hash );
 			}
 		}
 
