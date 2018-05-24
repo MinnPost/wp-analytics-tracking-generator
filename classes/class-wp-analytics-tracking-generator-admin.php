@@ -433,7 +433,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-track-fragment',
 				'args'     => array(
 					'type' => 'checkbox',
-					'desc' => 'Checking this will cause the tracker to send a pageview event when a # link is clicked',
+					'desc' => 'Checking this will cause the tracker to send a pageview event when a #hash link is clicked',
 				),
 			),
 			'track_form_submissions'  => array(
