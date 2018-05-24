@@ -139,6 +139,14 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			);
 		}
 
+		// ad blocker
+		$track_adblocker_enabled = filter_var( get_option( $this->option_prefix . 'track_adblocker_status', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( true === $track_adblocker_enabled ) {
+			$settings['track_adblocker'] = array(
+				'enabled' => $track_adblocker_enabled,
+			);
+		}
+
 		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
 		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( '../assets/css/' . $this->slug . '-front-end.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}

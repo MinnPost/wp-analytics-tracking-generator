@@ -1,10 +1,11 @@
 ( function( $ ) {
 
 	/*
-	category: Event Category
-	label: Event Label
-	action: Event Action
-	value: optional
+	 * Create a Google Analytics event
+	 * category: Event Category
+	 * label: Event Label
+	 * action: Event Action
+	 * value: optional
 	*/
 	function wp_analytics_tracking_event( type, category, action, label, value ) {
 		if ( typeof ga !== 'undefined' ) {
@@ -112,8 +113,24 @@
 
 	}
 
-	/*$( document ).ready( function() {
-
-	});*/
+	$( document ).ready( function() {
+		if ( 'undefined' !== typeof analytics_tracking_settings.track_adblocker && true === analytics_tracking_settings.track_adblocker.enabled ) {
+			if ( typeof window.adblockDetector === 'undefined' ) {
+				wp_analytics_tracking_event( 'event', 'Adblock', 'On', { 'nonInteraction': 1 } );
+			} else {
+				window.adblockDetector.init(
+					{
+						debug: false,
+						found: function() {
+							wp_analytics_tracking_event( 'event', 'Adblock', 'On', { 'nonInteraction': 1 } );
+						},
+						notFound: function() {
+							wp_analytics_tracking_event( 'event', 'Adblock', 'Off', { 'nonInteraction': 1 } );
+						}
+					}
+				);
+			}
+		}
+	});
 
 } )( jQuery );
