@@ -92,47 +92,51 @@ msgstr ""
 msgid "Track form submissions?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:499
+#: classes/class-wp-analytics-tracking-generator-admin.php:451
+msgid "Track ad blocker status?"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:510
 msgid "Available Dimensions"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:517
+#: classes/class-wp-analytics-tracking-generator-admin.php:528
 msgid "Enter a global WordPress variable for each dimension you have in Analytics. You can also use the wp_analytics_tracking_generator_add_dimension hook."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:522
+#: classes/class-wp-analytics-tracking-generator-admin.php:533
 msgid "Dimension "
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:597
+#: classes/class-wp-analytics-tracking-generator-admin.php:608
 msgid "Speed sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:608
+#: classes/class-wp-analytics-tracking-generator-admin.php:619
 msgid "User sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:618
+#: classes/class-wp-analytics-tracking-generator-admin.php:629
 msgid "Exclude users with Do Not Track header?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:628
+#: classes/class-wp-analytics-tracking-generator-admin.php:639
 msgid "Enable remarketing, demographics, interest reports?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:638
+#: classes/class-wp-analytics-tracking-generator-admin.php:649
 msgid "Exclude events from bounce-rate and time on page?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:648
+#: classes/class-wp-analytics-tracking-generator-admin.php:659
 msgid "Enable enhanced link attribution?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:658
+#: classes/class-wp-analytics-tracking-generator-admin.php:669
 msgid "Use hitCallback to increase event accuracy?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:668
+#: classes/class-wp-analytics-tracking-generator-admin.php:679
 msgid "Enable Force SSL?"
 msgstr ""
 
