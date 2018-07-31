@@ -171,7 +171,7 @@ class WP_Analytics_Tracking_Generator {
 	*/
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( __FILE__ ) === $file ) {
-			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '">' . __( 'Settings', 'wp-analytics-tracking-generator-admin' ) . '</a>';
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '-admin">' . __( 'Settings', 'wp-analytics-tracking-generator' ) . '</a>';
 			array_unshift( $links, $settings );
 		}
 		return $links;
