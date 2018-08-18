@@ -72,7 +72,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			if ( '' !== $type ) {
 				$disable_pageview  = get_option( $this->option_prefix . 'disable_pageview', false );
 				$disable_pageview  = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
-				$property_id       = get_option( $this->option_prefix . 'property_id', '' );
+				$property_id       = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
 				$custom_dimensions = $this->get_custom_dimensions();
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/front-end/tracking-code-' . $type . '.php' );
 			}

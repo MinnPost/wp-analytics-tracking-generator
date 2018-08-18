@@ -156,14 +156,15 @@ class WP_Analytics_Tracking_Generator_Admin {
 		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 
-		require_once( plugin_dir_path( __FILE__ ) . '/../settings-functions.inc.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-analytics-tracking-admin-settings.php' );
+		$settings = new WP_Analytics_Tracking_Admin_Settings;
 
 		$all_field_callbacks = array(
-			'text'       => 'display_input_field',
-			'checkboxes' => 'display_checkboxes',
-			'select'     => 'display_select',
-			'textarea'   => 'display_textarea',
-			'link'       => 'display_link',
+			'text'       => array( $settings, 'display_input_field' ),
+			'checkboxes' => array( $settings, 'display_checkboxes' ),
+			'select'     => array( $settings, 'display_select' ),
+			'textarea'   => array( $settings, 'display_textarea' ),
+			'link'       => array( $settings, 'display_link' ),
 		);
 
 		$this->basic_settings( 'basic_settings', 'basic_settings', $all_field_callbacks );

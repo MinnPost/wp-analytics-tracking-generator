@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Analytics Tracking Generator
 Description: Configurable Google Analytics tracking code generator only, no UI in WordPress.
-Version: 0.0.1
+Version: 0.0.2
 Author: Jonathan Stegall
 Author URI: https://code.minnpost.com
 Text Domain: wp-analytics-tracking-generator
@@ -82,7 +82,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function __construct() {
 
-		$this->version       = '0.0.1';
+		$this->version       = '0.0.2';
 		$this->slug          = 'wp-analytics-tracking-generator';
 		$this->option_prefix = 'wp_analytics_tracking_generator_';
 
