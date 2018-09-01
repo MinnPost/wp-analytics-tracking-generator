@@ -85,7 +85,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	* @return void
 	*/
 	public function scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-front-end', plugins_url( '../assets/js/' . $this->slug . '-front-end.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->slug . '-front-end', plugins_url( 'assets/js/' . $this->slug . '-front-end.min.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->version, true );
 
 		$settings = array();
 
@@ -148,7 +148,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		}
 
 		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
-		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( '../assets/css/' . $this->slug . '-front-end.min.css', __FILE__ ), array(), $this->version, 'all' );
+		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( 'assets/css/' . $this->slug . '-front-end.min.css', dirname( __FILE__ ) ), array(), $this->version, 'all' );
 	}
 
 	/**
