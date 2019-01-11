@@ -1,4 +1,4 @@
-# Copyright (C) 2018 wp-analytics-tracking-generator
+# Copyright (C) 2019 wp-analytics-tracking-generator
 # This file is distributed under the same license as the wp-analytics-tracking-generator package.
 msgid ""
 msgstr ""
