@@ -156,6 +156,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 
+		if ( ! isset( $get_data['page'] ) || $this->slug . '-admin' !== $get_data['page'] ) {
+			return;
+		}
+
 		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-analytics-tracking-admin-settings.php' );
 		$settings = new WP_Analytics_Tracking_Admin_Settings;
 
