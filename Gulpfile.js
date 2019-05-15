@@ -9,6 +9,7 @@ const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
 const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 const mqpacker = require( 'css-mqpacker' );
+const order = require( 'gulp-order' );
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
@@ -95,10 +96,6 @@ function adminscripts() {
       presets: ['@babel/preset-env']
     }))
     .pipe(concat( packagejson.name + '-admin.js')) // Concatenate
-    /*.pipe(uglify()) // Minify + compress
-    .pipe(rename({
-      suffix: '.min'
-    }))*/
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
@@ -106,15 +103,16 @@ function adminscripts() {
 
 function frontendscripts() {
   return gulp.src(config.scripts.front_end_src)
+    .pipe(order([
+      'vendor/**/*.js',  // other files in the ./src/vendor directory
+      'front-end/**/*.js' // files in the ./src/front-end directory
+    ])
+    )
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/preset-env']
     }))
     .pipe(concat( packagejson.name + '-front-end.js')) // Concatenate
-    /*.pipe(uglify()) // Minify + compress
-    .pipe(rename({
-      suffix: '.min'
-    }))*/
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
