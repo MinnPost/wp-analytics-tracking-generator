@@ -18,95 +18,138 @@
 			return;
 		}
 	}
-	if ( 'undefined' !== typeof analytics_tracking_settings ) {
-		if ( 'undefined' !== typeof analytics_tracking_settings.scroll && true === analytics_tracking_settings.scroll.enabled ) {
-			jQuery.scrollDepth( { gaGlobal: 'ga', gtmOverride: true } );
-		}
 
-		if ( 'undefined' !== typeof analytics_tracking_settings.special && true === analytics_tracking_settings.special.enabled ) {
+	function wp_analytics_tracking_setup() {
+		var scrollDepthSettings = [];
+		if ( 'undefined' !== typeof analytics_tracking_settings ) {
+			if ( 'undefined' !== typeof analytics_tracking_settings.scroll && true === analytics_tracking_settings.scroll.enabled ) {
 
-			// external links
-			$( 'a[href^="http"]:not([href*="://' + document.domain + '"])' ).click( function() {
-			    wp_analytics_tracking_event( 'event', 'Outbound links', 'Click', this.href );
-			});
+				// value is a string and a boolean
+				if ( 'undefined' !== typeof analytics_tracking_settings.analytics_type && 'gtagjs' !== analytics_tracking_settings.analytics_type ) {
+					scrollDepthSettings['gtmOverride'] = true;
+					scrollDepthSettings['gaGlobal'] = 'ga';
+				}
 
-			// mailto links
-			$( 'a[href^="mailto"]' ).click( function() {
-			    wp_analytics_tracking_event( 'event', 'Mails', 'Click', this.href.substring( 7 ) );
-			});
+				// value is a string
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.minimum_height && '0' !== analytics_tracking_settings.scroll.minimum_height ) {
+					scrollDepthSettings['minimum_height'] = analytics_tracking_settings.scroll.minimum_height;
+				}
 
-			// tel links
-			$( 'a[href^="tel"]' ).click( function() {
-			    wp_analytics_tracking_event( 'event', 'Telephone', 'Call', this.href.substring( 7 ) );
-			});
+				// value is a boolean. default is true.
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.percentage && 'true' !== analytics_tracking_settings.scroll.percentage ) {
+					scrollDepthSettings['percentage'] = false;
+				}
 
-			// internal links
-			$( 'a:not([href^="(http:|https:)?//"],[href^="#"],[href^="mailto:"])' ).click( function() {
+				// value is a boolean. default is true.
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.user_timing && 'true' !== analytics_tracking_settings.scroll.user_timing ) {
+					scrollDepthSettings['user_timing'] = false;
+				}
 
-				// track downloads
-				if ( '' !== analytics_tracking_settings.special.download_regex ) {
-					var url = this.href;
-					var checkDownload = new RegExp( "\\.(" + analytics_tracking_settings.special.download_regex + ")([\?#].*)?$", "i" );
-					var isDownload = checkDownload.test( url );
-					if ( true === isDownload ) {
-						var checkDownloadExtension = new RegExp("\\.(" + analytics_tracking_settings.special.download_regex + ")([\?#].*)?$", "i");
-						var extensionResult = checkDownloadExtension.exec( url );
-						var extension = '';
-						if ( null !== extensionResult ) {
-							extension = extensionResult[1];
-						} else {
-							extension = extensionResult;
+				// value is a boolean. default is true.
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.pixel_depth && 'true' !== analytics_tracking_settings.scroll.user_timing ) {
+					scrollDepthSettings['pixel_depth'] = false;
+				}
+
+				// value is a boolean. default is true.
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.non_interaction && 'true' !== analytics_tracking_settings.scroll.non_interaction ) {
+					scrollDepthSettings['non_interaction'] = false;
+				}
+
+				// value is an array. default is empty.
+				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.scroll_elements ) {
+					scrollDepthSettings['elements'] = $.map( analytics_tracking_settings.scroll.scroll_elements.split( ',' ), $.trim );
+				}
+				
+				// send scroll settings to the scrolldepth plugin
+				jQuery.scrollDepth( scrollDepthSettings );
+			}
+
+			if ( 'undefined' !== typeof analytics_tracking_settings.special && true === analytics_tracking_settings.special.enabled ) {
+
+				// external links
+				$( 'a[href^="http"]:not([href*="://' + document.domain + '"])' ).click( function() {
+				    wp_analytics_tracking_event( 'event', 'Outbound links', 'Click', this.href );
+				});
+
+				// mailto links
+				$( 'a[href^="mailto"]' ).click( function() {
+				    wp_analytics_tracking_event( 'event', 'Mails', 'Click', this.href.substring( 7 ) );
+				});
+
+				// tel links
+				$( 'a[href^="tel"]' ).click( function() {
+				    wp_analytics_tracking_event( 'event', 'Telephone', 'Call', this.href.substring( 7 ) );
+				});
+
+				// internal links
+				$( 'a:not([href^="(http:|https:)?//"],[href^="#"],[href^="mailto:"])' ).click( function() {
+
+					// track downloads
+					if ( '' !== analytics_tracking_settings.special.download_regex ) {
+						var url = this.href;
+						var checkDownload = new RegExp( "\\.(" + analytics_tracking_settings.special.download_regex + ")([\?#].*)?$", "i" );
+						var isDownload = checkDownload.test( url );
+						if ( true === isDownload ) {
+							var checkDownloadExtension = new RegExp("\\.(" + analytics_tracking_settings.special.download_regex + ")([\?#].*)?$", "i");
+							var extensionResult = checkDownloadExtension.exec( url );
+							var extension = '';
+							if ( null !== extensionResult ) {
+								extension = extensionResult[1];
+							} else {
+								extension = extensionResult;
+							}
+							// we can't use the url for the value here, even though that would be nice, because value is supposed to be an integer
+							wp_analytics_tracking_event( 'event', 'Downloads', extension, this.href );
 						}
-						// we can't use the url for the value here, even though that would be nice, because value is supposed to be an integer
-						wp_analytics_tracking_event( 'event', 'Downloads', extension, this.href );
 					}
-				}
 
-			});
+				});
 
-		}
+			}
 
-		if ( 'undefined' !== typeof analytics_tracking_settings.affiliate && true === analytics_tracking_settings.affiliate.enabled ) {
-			// any link could be an affiliate, i guess?
-			$( 'a' ).click( function() {
+			if ( 'undefined' !== typeof analytics_tracking_settings.affiliate && true === analytics_tracking_settings.affiliate.enabled ) {
+				// any link could be an affiliate, i guess?
+				$( 'a' ).click( function() {
 
-				// track affiliates
-				if ( '' !== analytics_tracking_settings.affiliate.affiliate_regex ) {
-					var checkAffiliate = new RegExp( "\\.(" + analytics_tracking_settings.affiliate.affiliate_regex + ")([\?#].*)?$", "i" );
-					var isAffiliate = checkAffiliate.test( url );
-					if ( true === isAffiliate ) {
-						wp_analytics_tracking_event( 'event', 'Affiliate', 'Click', this.href );
+					// track affiliates
+					if ( '' !== analytics_tracking_settings.affiliate.affiliate_regex ) {
+						var checkAffiliate = new RegExp( "\\.(" + analytics_tracking_settings.affiliate.affiliate_regex + ")([\?#].*)?$", "i" );
+						var isAffiliate = checkAffiliate.test( url );
+						if ( true === isAffiliate ) {
+							wp_analytics_tracking_event( 'event', 'Affiliate', 'Click', this.href );
+						}
 					}
-				}
 
-			});
-		}
+				});
+			}
 
-		// link fragments as pageviews
-		// does not use the event tracking method
-		if ( 'undefined' !== typeof analytics_tracking_settings.fragment && true === analytics_tracking_settings.fragment.enabled ) {
-			if ( typeof ga !== 'undefined' ) {
-				window.onhashchange = function() {
-					ga( 'send', 'pageview', location.pathname + location.search + location.hash );
+			// link fragments as pageviews
+			// does not use the event tracking method
+			if ( 'undefined' !== typeof analytics_tracking_settings.fragment && true === analytics_tracking_settings.fragment.enabled ) {
+				if ( typeof ga !== 'undefined' ) {
+					window.onhashchange = function() {
+						ga( 'send', 'pageview', location.pathname + location.search + location.hash );
+					}
 				}
 			}
-		}
 
-		// basic form submits
-		if ( 'undefined' !== typeof analytics_tracking_settings.form_submissions && true === analytics_tracking_settings.form_submissions.enabled ) {
-			$( 'input[type="submit"], button[type="submit"]' ).click( function( f ) {
-	            var category = $( this ).data( 'ga-category' ) || 'Form';
-	            var action = $( this ).data( 'ga-action' ) || 'Submit';
-	            var label = $( this ).data( 'ga-label' ) || this.name || this.value;
-	            wp_analytics_tracking_event( 'event', category, action, label );
-	        });
-		}
+			// basic form submits
+			if ( 'undefined' !== typeof analytics_tracking_settings.form_submissions && true === analytics_tracking_settings.form_submissions.enabled ) {
+				$( 'input[type="submit"], button[type="submit"]' ).click( function( f ) {
+		            var category = $( this ).data( 'ga-category' ) || 'Form';
+		            var action = $( this ).data( 'ga-action' ) || 'Submit';
+		            var label = $( this ).data( 'ga-label' ) || this.name || this.value;
+		            wp_analytics_tracking_event( 'event', category, action, label );
+		        });
+			}
 
-	} else {
-		console.log( 'no analytics_tracking_settings' );
+		} else {
+			console.log( 'no analytics_tracking_settings' );
+		}
 	}
 
 	$( document ).ready( function() {
+		wp_analytics_tracking_setup();
 		if ( 'undefined' !== typeof analytics_tracking_settings.track_adblocker && true === analytics_tracking_settings.track_adblocker.enabled ) {
 			if ( typeof window.adblockDetector === 'undefined' ) {
 				wp_analytics_tracking_event( 'event', 'Adblock', 'On', { 'nonInteraction': 1 } );

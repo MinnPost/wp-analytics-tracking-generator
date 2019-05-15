@@ -92,6 +92,12 @@ class WP_Analytics_Tracking_Generator_Front_End {
 
 		$settings = array();
 
+		// type of analytics code
+		$analytics_type = get_option( $this->option_prefix . 'tracking_code_type', '' );
+		if ( '' !== $analytics_type ) {
+			$settings['analytics_type'] = $analytics_type;
+		}
+
 		// scroll depth settings
 		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
 		if ( true === $scroll_enabled ) {
