@@ -17,6 +17,7 @@ const globbing = require( 'gulp-css-globbing' );
 const imagemin = require( 'gulp-imagemin' );
 const mqpacker = require( 'css-mqpacker' );
 const notify = require( 'gulp-notify' );
+const order = require( 'gulp-order' );
 const plumber = require( 'gulp-plumber' );
 const postcss = require( 'gulp-postcss' );
 const reload = browserSync.reload;
@@ -38,7 +39,7 @@ const paths = {
 	'php': [ './*.php', './**/*.php' ],
 	'sass': 'assets/sass/**/*.scss',
 	'concat_scripts_admin': 'assets/js/src/admin/*.js',
-	'concat_scripts_front_end': 'assets/js/src/front-end/*.js',
+	'concat_scripts_front_end': [ 'assets/js/src/**/*', '!assets/js/src/admin/*' ],
 	'scripts': [ 'assets/js/*.js', '!assets/js/*.min.js' ]
 };
 
@@ -241,7 +242,11 @@ gulp.task( 'concat-admin', () =>
 );
 gulp.task( 'concat-front-end', () =>
 	gulp.src( paths.concat_scripts_front_end )
-
+		.pipe(order([
+		    'vendor/**/*.js',  // other files in the ./src/vendor directory
+		    'front-end/**/*.js' // files in the ./src/app directory
+		  ])
+		)
 		// Deal with errors.
 		.pipe( plumber(
 			{'errorHandler': handleErrors}
