@@ -89,23 +89,23 @@ function frontendstyles() {
 }
 
 function adminscripts() {
-  return gulp.src(config.scripts.admin)
+  return gulp.src(config.scripts.admin_src)
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/preset-env']
     }))
     .pipe(concat( packagejson.name + '-admin.js')) // Concatenate
-    .pipe(uglify()) // Minify + compress
+    /*.pipe(uglify()) // Minify + compress
     .pipe(rename({
       suffix: '.min'
-    }))
+    }))*/
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
 }
 
 function frontendscripts() {
-  return gulp.src(config.scripts.main)
+  return gulp.src(config.scripts.front_end_src)
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/preset-env']
