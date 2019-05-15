@@ -16,6 +16,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 
 	protected $option_prefix;
 	protected $version;
+	protected $file;
 	protected $slug;
 	protected $settings;
 	//protected $cache;
@@ -25,14 +26,16 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	*
 	* @param string $option_prefix
 	* @param string $version
+	* @param string $file
 	* @param string $slug
 	* @param object $settings
 	* @throws \Exception
 	*/
-	public function __construct( $option_prefix, $version, $slug, $settings ) {
+	public function __construct( $option_prefix, $version, $file, $slug, $settings ) {
 
 		$this->option_prefix = $option_prefix;
 		$this->version       = $version;
+		$this->file          = $file;
 		$this->slug          = $slug;
 		$this->settings      = $settings;
 		//$this->cache         = $cache;
@@ -74,7 +77,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				$disable_pageview  = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
 				$property_id       = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
 				$custom_dimensions = $this->get_custom_dimensions();
-				require_once( plugin_dir_path( __FILE__ ) . '/../templates/front-end/tracking-code-' . $type . '.php' );
+				require_once( plugin_dir_path( $this->file ) . '/templates/front-end/tracking-code-' . $type . '.php' );
 			}
 		}
 	}
@@ -85,7 +88,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	* @return void
 	*/
 	public function scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-front-end', plugins_url( 'assets/js/' . $this->slug . '-front-end.min.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.js', dirname( $this->file ) ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.js' ), true );
 
 		$settings = array();
 
@@ -148,7 +151,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		}
 
 		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
-		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( 'assets/css/' . $this->slug . '-front-end.min.css', dirname( __FILE__ ) ), array(), $this->version, 'all' );
+		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/css/' . $this->slug . '-front-end.min.css', dirname( $this->file ) ), array(), $this->version, 'all' );
 	}
 
 	/**

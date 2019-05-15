@@ -20,6 +20,12 @@ class WP_Analytics_Tracking_Generator {
 
 	/**
 	* @var string
+	* This file
+	*/
+	private $file;
+
+	/**
+	* @var string
 	* The plugin's slug
 	*/
 	protected $slug;
@@ -83,6 +89,7 @@ class WP_Analytics_Tracking_Generator {
 	public function __construct() {
 
 		$this->version       = '0.0.5';
+		$this->file          = __FILE__;
 		$this->slug          = 'wp-analytics-tracking-generator';
 		$this->option_prefix = 'wp_analytics_tracking_generator_';
 
@@ -114,7 +121,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function cache() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-cache.php' );
-		$cache = new WP_Analytics_Tracking_Generator_Cache( $this->option_prefix, $this->version, $this->slug );
+		$cache = new WP_Analytics_Tracking_Generator_Cache( $this->option_prefix, $this->version, $this->file, $this->slug );
 		return $cache;
 	}
 
@@ -125,7 +132,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function settings() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-settings.php' );
-		$settings = new WP_Analytics_Tracking_Generator_Settings( $this->option_prefix, $this->version, $this->slug );
+		$settings = new WP_Analytics_Tracking_Generator_Settings( $this->option_prefix, $this->version, $this->file, $this->slug );
 		return $settings;
 	}
 
@@ -136,7 +143,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function admin() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-admin.php' );
-		$admin = new WP_Analytics_Tracking_Generator_Admin( $this->option_prefix, $this->version, $this->slug, $this->settings );
+		$admin = new WP_Analytics_Tracking_Generator_Admin( $this->option_prefix, $this->version, $this->file, $this->slug, $this->settings );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 		return $admin;
 	}
@@ -148,7 +155,7 @@ class WP_Analytics_Tracking_Generator {
 	 */
 	public function front_end() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-front-end.php' );
-		$front_end = new WP_Analytics_Tracking_Generator_Front_End( $this->option_prefix, $this->version, $this->slug, $this->settings );
+		$front_end = new WP_Analytics_Tracking_Generator_Front_End( $this->option_prefix, $this->version, $this->file, $this->slug, $this->settings );
 		return $front_end;
 	}
 

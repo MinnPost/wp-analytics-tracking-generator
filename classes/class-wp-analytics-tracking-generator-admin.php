@@ -16,6 +16,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 	protected $option_prefix;
 	protected $version;
+	protected $file;
 	protected $slug;
 	protected $settings;
 	//protected $cache;
@@ -25,14 +26,16 @@ class WP_Analytics_Tracking_Generator_Admin {
 	*
 	* @param string $option_prefix
 	* @param string $version
+	* @param string $file
 	* @param string $slug
 	* @param object $settings
 	* @throws \Exception
 	*/
-	public function __construct( $option_prefix, $version, $slug, $settings ) {
+	public function __construct( $option_prefix, $version, $file, $slug, $settings ) {
 
 		$this->option_prefix = $option_prefix;
 		$this->version       = $version;
+		$this->file          = $file;
 		$this->slug          = $slug;
 		$this->settings      = $settings;
 		//$this->cache         = $cache;
