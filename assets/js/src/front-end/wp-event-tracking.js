@@ -20,6 +20,9 @@
 	}
 
 	function wp_analytics_tracking_setup() {
+		if ( 'undefined' === typeof ga ) {
+			return;
+		}
 		var scrollDepthSettings = [];
 		if ( 'undefined' !== typeof analytics_tracking_settings ) {
 			if ( 'undefined' !== typeof analytics_tracking_settings.scroll && true === analytics_tracking_settings.scroll.enabled ) {
