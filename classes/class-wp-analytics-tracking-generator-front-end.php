@@ -88,7 +88,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	* @return void
 	*/
 	public function scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.js', dirname( $this->file ) ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.js' ), true );
+		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.min.js', dirname( $this->file ) ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.min.js' ), true );
 
 		$settings = array();
 
