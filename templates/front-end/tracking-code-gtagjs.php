@@ -27,7 +27,5 @@
 			<?php endforeach; ?>
 		});
 	<?php endif; ?>
-	<?php if ( true !== $disable_pageview ) : ?>
-	<?php endif; ?>
 </script>
 <!-- End WP Analytics Tracking Generator gtag.js code -->
