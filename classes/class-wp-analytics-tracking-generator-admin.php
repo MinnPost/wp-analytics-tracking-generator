@@ -228,6 +228,27 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'constant' => 'WP_ANALYTICS_TRACKING_ID',
 				),
 			),
+			'disable_optimize'   => array(
+				'title'    => __( 'Disable Google Optimize?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'optimize_id'        => array(
+				'title'    => __( 'Google Optimize Container ID', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_OPTIMIZE_CONTAINER_ID',
+				),
+			),
 			'disable_pageview'   => array(
 				'title'    => __( 'Disable pageview tracking?', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
