@@ -38,7 +38,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 		}
 
 		if ( isset( $args['constant'] ) && defined( $args['constant'] ) ) {
-			echo sprintf( '<p><code>%1$s</code></p>',
+			echo sprintf(
+				'<p><code>%1$s</code></p>',
 				esc_html__( 'Defined in wp-config.php', 'wp-analytics-tracking-generator' )
 			);
 		} else {
@@ -54,7 +55,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 				$value = $args['default'];
 			}
 
-			$field .= sprintf( '<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
+			$field .= sprintf(
+				'<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
 				esc_attr( $type ),
 				esc_attr( $value ),
 				esc_attr( $name ),
@@ -63,7 +65,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 				esc_html( $checked )
 			);
 			if ( '' !== $desc ) {
-				$field .= sprintf( '<p class="description">%1$s</p>',
+				$field .= sprintf(
+					'<p class="description">%1$s</p>',
 					esc_html( $desc )
 				);
 			}
@@ -112,7 +115,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 
 			$input_name = $name;
 
-			$field .= sprintf( '<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s[]" id="%4$s"%5$s>%6$s</label></div>',
+			$field .= sprintf(
+				'<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s[]" id="%4$s"%5$s>%6$s</label></div>',
 				esc_attr( $type ),
 				esc_attr( $item_value ),
 				esc_attr( $input_name ),
@@ -121,14 +125,16 @@ class WP_Analytics_Tracking_Admin_Settings {
 				esc_html( $text )
 			);
 			if ( '' !== $desc ) {
-				$field .= sprintf( '<p class="description">%1$s</p>',
+				$field .= sprintf(
+					'<p class="description">%1$s</p>',
 					esc_html( $desc )
 				);
 			}
 		}
 
 		if ( '' !== $group_desc ) {
-			$field .= sprintf( '<p class="description">%1$s</p>',
+			$field .= sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $group_desc )
 			);
 		}
@@ -154,7 +160,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 
 		$current_value = get_option( $name, '' );
 
-		$field .= sprintf( '<div class="select"><select id="%1$s" name="%2$s"><option value="">- Select one -</option>',
+		$field .= sprintf(
+			'<div class="select"><select id="%1$s" name="%2$s"><option value="">- ' . __( 'Select one', 'wp-analytics-tracking-generator' ) . ' -</option>',
 			esc_attr( $id ),
 			esc_attr( $name )
 		);
@@ -178,7 +185,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 				}
 			}
 
-			$field .= sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+			$field .= sprintf(
+				'<option value="%1$s"%2$s>%3$s</option>',
 				esc_attr( $item_value ),
 				esc_attr( $selected ),
 				esc_html( $text )
@@ -187,7 +195,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 		}
 		$field .= '</select>';
 		if ( '' !== $desc ) {
-			$field .= sprintf( '<p class="description">%1$s</p>',
+			$field .= sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}
@@ -226,7 +235,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 			$cols_attr = '';
 		}
 
-		echo sprintf( '<textarea name="%1$s" id="%2$s" class="%3$s"%4$s%5$s>%6$s</textarea>',
+		echo sprintf(
+			'<textarea name="%1$s" id="%2$s" class="%3$s"%4$s%5$s>%6$s</textarea>',
 			esc_attr( $name ),
 			esc_attr( $id ),
 			sanitize_html_class( $class . esc_html( ' code' ) ),
@@ -235,7 +245,8 @@ class WP_Analytics_Tracking_Admin_Settings {
 			esc_attr( $value )
 		);
 		if ( '' !== $desc ) {
-			echo sprintf( '<p class="description">%1$s</p>',
+			echo sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}
@@ -255,20 +266,23 @@ class WP_Analytics_Tracking_Admin_Settings {
 		$desc  = $args['desc'];
 		$url   = $args['url'];
 		if ( isset( $args['link_class'] ) ) {
-			$field .= sprintf( '<p><a class="%1$s" href="%2$s">%3$s</a></p>',
+			$field .= sprintf(
+				'<p><a class="%1$s" href="%2$s">%3$s</a></p>',
 				esc_attr( $args['link_class'] ),
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		} else {
-			$field .= sprintf( '<p><a href="%1$s">%2$s</a></p>',
+			$field .= sprintf(
+				'<p><a href="%1$s">%2$s</a></p>',
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		}
 
 		if ( '' !== $desc ) {
-			$field .= sprintf( '<p class="description">%1$s</p>',
+			$field .= sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}

@@ -10,12 +10,8 @@
 <script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	<?php if ( true !== $disable_pageview ) : ?>
-	gtag('config', '<?php echo esc_attr( $property_id ); ?>');
-	<?php else : ?>
-	gtag('config', '<?php echo esc_attr( $property_id ); ?>', { 'send_page_view': false });
-	<?php endif; ?>
+	gtag( 'js', new Date() );
+	gtag( 'config', '<?php echo esc_attr( $property_id ); ?>', <?php echo $tracking_config_json; ?> );
 	<?php if ( ! empty( $custom_dimensions ) ) : ?>
 		gtag( 'set', {
 			<?php foreach ( $custom_dimensions as $key => $value ) : ?>
@@ -26,8 +22,6 @@
 				<?php endif; ?>
 			<?php endforeach; ?>
 		});
-	<?php endif; ?>
-	<?php if ( true !== $disable_pageview ) : ?>
 	<?php endif; ?>
 </script>
 <!-- End WP Analytics Tracking Generator gtag.js code -->

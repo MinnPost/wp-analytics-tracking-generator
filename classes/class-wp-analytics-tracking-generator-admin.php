@@ -133,7 +133,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+			echo sprintf(
+				'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 				esc_attr( $active ),
 				esc_url( '?page=' . $this->slug . '-admin&tab=' . $tab_key ),
 				esc_html( $tab_caption )
@@ -226,6 +227,27 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'type'     => 'text',
 					'desc'     => '',
 					'constant' => 'WP_ANALYTICS_TRACKING_ID',
+				),
+			),
+			'disable_optimize'   => array(
+				'title'    => __( 'Disable Google Optimize?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'checkbox',
+					'desc' => '',
+				),
+			),
+			'optimize_id'        => array(
+				'title'    => __( 'Google Optimize Container ID', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_OPTIMIZE_CONTAINER_ID',
 				),
 			),
 			'disable_pageview'   => array(
