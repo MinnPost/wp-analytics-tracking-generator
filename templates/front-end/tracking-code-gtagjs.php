@@ -10,8 +10,8 @@
 <script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', '<?php echo esc_attr( $property_id ); ?>', <?php echo $tracking_config_json ?>);
+	gtag( 'js', new Date() );
+	gtag( 'config', '<?php echo esc_attr( $property_id ); ?>', <?php echo $tracking_config_json; ?> );
 	<?php if ( ! empty( $custom_dimensions ) ) : ?>
 		gtag( 'set', {
 			<?php foreach ( $custom_dimensions as $key => $value ) : ?>

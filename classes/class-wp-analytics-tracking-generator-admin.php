@@ -133,7 +133,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+			echo sprintf(
+				'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 				esc_attr( $active ),
 				esc_url( '?page=' . $this->slug . '-admin&tab=' . $tab_key ),
 				esc_html( $tab_caption )

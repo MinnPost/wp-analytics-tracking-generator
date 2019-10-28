@@ -73,17 +73,17 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		if ( true === $show_analytics_code ) {
 			$type = get_option( $this->option_prefix . 'tracking_code_type', '' );
 			if ( '' !== $type ) {
-				$disable_pageview  = get_option( $this->option_prefix . 'disable_pageview', false );
-				$disable_pageview  = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
-				$property_id       = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
+				$disable_pageview = get_option( $this->option_prefix . 'disable_pageview', false );
+				$disable_pageview = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
+				$property_id      = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
 
-				$disable_optimize  = get_option( $this->option_prefix . 'disable_optimize', false );
-				$disable_optimize  = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
-				$optimize_id       = defined( 'WP_OPTIMIZE_CONTAINER_ID' ) ? WP_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
+				$disable_optimize = get_option( $this->option_prefix . 'disable_optimize', false );
+				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
+				$optimize_id      = defined( 'WP_OPTIMIZE_CONTAINER_ID' ) ? WP_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
 
 				$custom_dimensions = $this->get_custom_dimensions();
 
-				$tracking_config   = array();
+				$tracking_config = array();
 				if ( $disable_pageview ) {
 					$tracking_config['send_page_view'] = false;
 				}
@@ -91,7 +91,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 					$tracking_config['optimize_id'] = $optimize_id;
 				}
 				$tracking_config_json = '{}';
-				if ( !empty( $tracking_config ) ) {
+				if ( ! empty( $tracking_config ) ) {
 					$tracking_config_json = json_encode( $tracking_config );
 				}
 
