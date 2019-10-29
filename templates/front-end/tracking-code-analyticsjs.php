@@ -15,7 +15,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 
 ga( 'create', '<?php echo esc_attr( $property_id ); ?>', 'auto' );
 <?php if ( true !== $disable_optimize && isset( $optimize_id ) ) : ?>
-	ga( 'require', <?php echo esc_attr( $optimize_id ); ?> );
+	ga( 'require', '<?php echo esc_attr( $optimize_id ); ?>' );
 <?php endif; ?>
 <?php if ( ! empty( $custom_dimensions ) ) : ?>
 	<?php foreach ( $custom_dimensions as $key => $value ) : ?>
