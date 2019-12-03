@@ -43,21 +43,19 @@ const config = {
 };
 
 function adminstyles() {
-  return gulp.src(config.styles.admin_src)
+  return gulp.src(config.styles.admin_src, { allowEmpty: true })
     .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
     .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
     .pipe(sass()) // Compile
     .on('error', sass.logError) // Error reporting
     .pipe(postcss([
-    autoprefixer( {
-      'browsers': [ 'last 2 version' ]
-    } ),
-    mqpacker( {
-      'sort': true
-    } ),
-        cssnano( {
-      'safe': true // Use safe optimizations.
-    } ) // Minify
+      mqpacker( {
+        'sort': true
+      } ),
+      autoprefixer(),
+      cssnano( {
+        'safe': true // Use safe optimizations.
+      } ) // Minify
     ]))
     .pipe(rename({ // Rename to .min.css
       suffix: '.min'
@@ -68,34 +66,32 @@ function adminstyles() {
 }
 
 function frontendstyles() {
-  return gulp.src(config.styles.front_end_src)
+  return gulp.src(config.styles.front_end_src, { allowEmpty: true })
     .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
     .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
     .pipe(sass()) // Compile
     .on('error', sass.logError) // Error reporting
     .pipe(postcss([
-    autoprefixer( {
-      'browsers': [ 'last 2 version' ]
-    } ),
-    mqpacker( {
-      'sort': true
-    } ),
-    cssnano( {
-      'safe': true // Use safe optimizations.
+      mqpacker( {
+        'sort': true
+      } ),
+      autoprefixer(),
+      cssnano( {
+        'safe': true // Use safe optimizations.
     } ) // Minify
     ]))
     .pipe(sourcemaps.write()) // Write the sourcemap files
-    .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
+    .pipe(gulp.dest(config.styles.front_end_dest)) // Drop the resulting CSS file in the specified dir
     .pipe(browserSync.stream());
 }
 
 function adminscripts() {
-  return gulp.src(config.scripts.admin_src)
+  return gulp.src(config.scripts.admin_src, { allowEmpty: true })
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/preset-env']
     }))
-    .pipe(concat( packagejson.name + '-admin.js')) // Concatenate
+    .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
@@ -157,8 +153,8 @@ function browserSyncReload(done) {
 
 // Watch directories, and run specific tasks on file changes
 function watch() {
-  gulp.watch(config.styles.srcDir, styles);
-  gulp.watch(config.scripts.admin, adminscripts);
+  gulp.watch(config.styles.admin_src, adminstyles);
+  gulp.watch(config.scripts.admin_src, adminscripts);
   
   // Reload browsersync when PHP files change, if active
   if (config.browserSync.active) {
@@ -166,18 +162,14 @@ function watch() {
   }
 }
 
-// export tasks
-exports.adminstyles     = adminstyles;
-exports.frontendstyles  = frontendstyles;
-exports.adminscripts    = adminscripts;
-exports.frontendscripts = frontendscripts;
-exports.uglifyscripts   = uglifyscripts;
-exports.translate       = translate;
-exports.watch           = watch;
+// define complex gulp tasks
+const styles  = gulp.series(adminstyles);
+const scripts = gulp.series(frontendscripts, adminscripts, uglifyscripts);
+const build   = gulp.series(gulp.parallel(styles, scripts, translate));
 
-// What happens when we run gulp?
-gulp.task('default',
-  gulp.series(
-    gulp.parallel(adminstyles, adminscripts, frontendscripts, uglifyscripts, translate) // run these tasks asynchronously
-  )
-);
+// export tasks
+exports.styles    = styles;
+exports.scripts   = scripts;
+exports.translate = translate;
+exports.watch     = watch;
+exports.default   = build;

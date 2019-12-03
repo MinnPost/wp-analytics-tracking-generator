@@ -17,127 +17,139 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-admin-settings.php:42
+#: classes/class-wp-analytics-tracking-admin-settings.php:43
 msgid "Defined in wp-config.php"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-admin-settings.php:164
+msgid "Select one"
 msgstr ""
 
 #: classes/class-wp-analytics-tracking-generator-admin.php:71
 msgid "Analytics Tracking"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:209
+#: classes/class-wp-analytics-tracking-generator-admin.php:210
 msgid "Tracking Code Type"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:221
+#: classes/class-wp-analytics-tracking-generator-admin.php:222
 msgid "Tracking ID"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:232
+#: classes/class-wp-analytics-tracking-generator-admin.php:233
+msgid "Disable Google Optimize?"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:243
+msgid "Google Optimize Container ID"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:254
 msgid "Disable pageview tracking?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:242
+#: classes/class-wp-analytics-tracking-generator-admin.php:264
 msgid "Disable Analytics for these roles"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:304
+#: classes/class-wp-analytics-tracking-generator-admin.php:326
 msgid "Track page scroll depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:315
+#: classes/class-wp-analytics-tracking-generator-admin.php:337
 msgid "Minimum height"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:327
+#: classes/class-wp-analytics-tracking-generator-admin.php:349
 msgid "Scroll depth elements"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:339
+#: classes/class-wp-analytics-tracking-generator-admin.php:361
 msgid "Track scroll percentage?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:351
+#: classes/class-wp-analytics-tracking-generator-admin.php:373
 msgid "Track user timing?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:363
+#: classes/class-wp-analytics-tracking-generator-admin.php:385
 msgid "Track pixel depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:375
+#: classes/class-wp-analytics-tracking-generator-admin.php:397
 msgid "Use nonInteraction?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:387
+#: classes/class-wp-analytics-tracking-generator-admin.php:409
 msgid "Track downloads, mailto, telephone, outbound links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:398
+#: classes/class-wp-analytics-tracking-generator-admin.php:420
 msgid "Download regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:410
+#: classes/class-wp-analytics-tracking-generator-admin.php:432
 msgid "Track affiliate links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:421
+#: classes/class-wp-analytics-tracking-generator-admin.php:443
 msgid "Affiliate regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:433
+#: classes/class-wp-analytics-tracking-generator-admin.php:455
 msgid "Track fragment links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:444
+#: classes/class-wp-analytics-tracking-generator-admin.php:466
 msgid "Track form submissions?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:455
+#: classes/class-wp-analytics-tracking-generator-admin.php:477
 msgid "Track ad blocker status?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:514
+#: classes/class-wp-analytics-tracking-generator-admin.php:536
 msgid "Available Dimensions"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:532
+#: classes/class-wp-analytics-tracking-generator-admin.php:554
 msgid "Enter a global WordPress variable for each dimension you have in Analytics. You can also use the wp_analytics_tracking_generator_add_dimension hook."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:537
+#: classes/class-wp-analytics-tracking-generator-admin.php:559
 msgid "Dimension "
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:612
+#: classes/class-wp-analytics-tracking-generator-admin.php:634
 msgid "Speed sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:623
+#: classes/class-wp-analytics-tracking-generator-admin.php:645
 msgid "User sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:633
+#: classes/class-wp-analytics-tracking-generator-admin.php:655
 msgid "Exclude users with Do Not Track header?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:643
+#: classes/class-wp-analytics-tracking-generator-admin.php:665
 msgid "Enable remarketing, demographics, interest reports?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:653
+#: classes/class-wp-analytics-tracking-generator-admin.php:675
 msgid "Exclude events from bounce-rate and time on page?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:663
+#: classes/class-wp-analytics-tracking-generator-admin.php:685
 msgid "Enable enhanced link attribution?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:673
+#: classes/class-wp-analytics-tracking-generator-admin.php:695
 msgid "Use hitCallback to increase event accuracy?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:683
+#: classes/class-wp-analytics-tracking-generator-admin.php:705
 msgid "Enable Force SSL?"
 msgstr ""
 
