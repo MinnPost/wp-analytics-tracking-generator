@@ -136,12 +136,19 @@
 				}
 			}
 
-			// basic form submits
+			// when a button is clicked, attach it to the form's data
+			$( 'input[type="submit"], button[type="submit"]' ).on( 'click', function() {
+				var form = $( this ).parents( 'form:first' );
+				$( form ).data( 'button', this );
+			});
+
+			// basic form submits. track submit instead of click because otherwise it's weird.
 			if ( 'undefined' !== typeof analytics_tracking_settings.form_submissions && true === analytics_tracking_settings.form_submissions.enabled ) {
-				$( 'input[type="submit"], button[type="submit"]' ).click( function( f ) {
-		            var category = $( this ).data( 'ga-category' ) || 'Form';
-		            var action = $( this ).data( 'ga-action' ) || 'Submit';
-		            var label = $( this ).data( 'ga-label' ) || this.name || this.value;
+				$( 'form' ).submit( function( f ) {
+					var button = $( this ).data( 'button' ) || $( 'input[type="submit"], button[type="submit"]' ).get( 0 );
+		            var category = $( button ).data( 'ga-category' ) || 'Form';
+		            var action = $( button ).data( 'ga-action' ) || 'Submit';
+		            var label = $( button ).data( 'ga-label' ) || $( button ).text() || button.value || button.name;
 		            wp_analytics_tracking_event( 'event', category, action, label );
 		        });
 			}
