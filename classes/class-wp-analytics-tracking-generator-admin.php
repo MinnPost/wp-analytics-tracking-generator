@@ -247,7 +247,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'args'     => array(
 					'type'     => 'text',
 					'desc'     => '',
-					'constant' => 'WP_OPTIMIZE_CONTAINER_ID',
+					'constant' => 'WP_ANALYTICS_OPTIMIZE_CONTAINER_ID',
 				),
 			),
 			'disable_pageview'   => array(
