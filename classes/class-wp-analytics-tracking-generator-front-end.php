@@ -79,7 +79,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 
 				$disable_optimize = get_option( $this->option_prefix . 'disable_optimize', false );
 				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
-				$optimize_id      = defined( 'WP_OPTIMIZE_CONTAINER_ID' ) ? WP_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
+				$optimize_id      = defined( 'WP_ANALYTICS_OPTIMIZE_CONTAINER_ID' ) ? WP_ANALYTICS_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
 
 				$custom_dimensions = $this->get_custom_dimensions();
 
