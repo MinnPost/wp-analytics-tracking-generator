@@ -8,7 +8,27 @@
 	 * value: optional
 	*/
 	function wp_analytics_tracking_event( type, category, action, label, value ) {
-		if ( typeof ga !== 'undefined' ) {
+		if ( typeof gtag !== 'undefined' ) {
+			// Sends the event to the Google Analytics property with
+			// tracking ID GA_MEASUREMENT_ID set by the config command in
+			// the global tracking snippet.
+			// example: gtag('event', 'play', { 'event_category': 'Videos', 'event_label': 'Fall Campaign' });
+			if ( typeof value === 'undefined' ) {
+				gtag( type, action, {
+					'event_category': category,
+					'event_label': label
+				} );
+			} else {
+				gtag( type, action, {
+					'event_category': category,
+					'event_label': label,
+					'value': value
+				} );
+			}
+		} else if ( typeof ga !== 'undefined' ) {
+			// Uses the default tracker to send the event to the
+			// Google Analytics property with tracking ID GA_MEASUREMENT_ID.
+			// example: ga('send', 'event', 'Videos', 'play', 'Fall Campaign');
 			if ( typeof value === 'undefined' ) {
 				ga( 'send', type, category, action, label );
 			} else {
@@ -20,7 +40,7 @@
 	}
 
 	function wp_analytics_tracking_setup() {
-		if ( 'undefined' === typeof ga ) {
+		if ( 'undefined' === typeof gtag && 'undefined' === typeof ga ) {
 			return;
 		}
 		var scrollDepthSettings = [];

@@ -6,7 +6,6 @@ const concat = require('gulp-concat');
 const cssnano = require('cssnano');
 const fs = require('fs');
 const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
 const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 const mqpacker = require( 'css-mqpacker' );
 const order = require( 'gulp-order' );
