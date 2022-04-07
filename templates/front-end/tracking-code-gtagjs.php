@@ -14,6 +14,9 @@
 	<?php if ( true !== $disable_pageview ) : ?>
 		gtag( 'config', '<?php echo esc_attr( $property_id ); ?>', <?php echo $tracking_config_json; ?> );
 	<?php endif; ?>
+	<?php if ( '' !== $google_ads_id ) : ?>
+		gtag( 'config', '<?php echo esc_attr( $google_ads_id ); ?>' );
+	<?php endif; ?>
 	<?php if ( ! empty( $custom_dimensions ) ) : ?>
 		gtag( 'set', {
 			<?php foreach ( $custom_dimensions as $key => $value ) : ?>

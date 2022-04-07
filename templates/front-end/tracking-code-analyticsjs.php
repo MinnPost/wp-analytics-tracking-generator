@@ -26,4 +26,13 @@ ga( 'create', '<?php echo esc_attr( $property_id ); ?>', 'auto' );
 ga('send', 'pageview');
 <?php endif; ?>
 </script>
+
+<?php if ( '' !== $google_ads_id ) : ?>
+<!-- Global site tag (gtag.js) - Google Ads: <?php echo esc_attr( $google_ads_id ); ?> -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $google_ads_id ); ?>"></script>
+<script> window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date()); gtag('config', '<?php echo esc_attr( $google_ads_id ); ?>'); </script>
+<?php endif; ?>
+
 <!-- End WP Analytics Tracking Generator analytics.js code -->

@@ -30,7 +30,7 @@
 			// example: ga('send', 'event', 'Videos', 'play', 'Fall Campaign');
 			// noninteraction seems to have been working like this in analytics.js.
 			if ( non_interaction == 1 ) {
-				label = { 'nonInteraction': 1 };
+				value = { 'nonInteraction': 1 };
 			}
 			if ( typeof value === 'undefined' ) {
 				ga( 'send', type, category, action, label );

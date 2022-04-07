@@ -76,6 +76,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				$disable_pageview = get_option( $this->option_prefix . 'disable_pageview', false );
 				$disable_pageview = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
 				$property_id      = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
+				$google_ads_id    = defined( 'WP_ANALYTICS_GOOGLE_ADS_ID' ) ? WP_ANALYTICS_GOOGLE_ADS_ID : get_option( $this->option_prefix . 'google_ads_id', '' );
 
 				$disable_optimize = get_option( $this->option_prefix . 'disable_optimize', false );
 				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
