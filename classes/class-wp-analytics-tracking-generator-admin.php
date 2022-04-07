@@ -229,6 +229,17 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'constant' => 'WP_ANALYTICS_TRACKING_ID',
 				),
 			),
+			'google_ads_id'      => array(
+				'title'    => __( 'Google Ads ID', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_ANALYTICS_GOOGLE_ADS_ID',
+				),
+			),
 			'disable_optimize'   => array(
 				'title'    => __( 'Disable Google Optimize?', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
