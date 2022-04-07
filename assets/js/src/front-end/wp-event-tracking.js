@@ -7,28 +7,31 @@
 	 * action: Event Action
 	 * value: optional
 	*/
-	function wp_analytics_tracking_event( type, category, action, label, value ) {
+	function wp_analytics_tracking_event( type, category, action, label, value, non_interaction ) {
 		if ( typeof gtag !== 'undefined' ) {
 			// Sends the event to the Google Analytics property with
 			// tracking ID GA_MEASUREMENT_ID set by the config command in
 			// the global tracking snippet.
 			// example: gtag('event', 'play', { 'event_category': 'Videos', 'event_label': 'Fall Campaign' });
-			if ( typeof value === 'undefined' ) {
-				gtag( type, action, {
-					'event_category': category,
-					'event_label': label
-				} );
-			} else {
-				gtag( type, action, {
-					'event_category': category,
-					'event_label': label,
-					'value': value
-				} );
+			var params = {
+				'event_category': category,
+				'event_label': label
+			};
+			if ( typeof value !== 'undefined' ) {
+				params.value = value;
 			}
+			if ( typeof non_interaction !== 'undefined' ) {
+				params.non_interaction = non_interaction;
+			}
+			gtag( type, action, params );
 		} else if ( typeof ga !== 'undefined' ) {
 			// Uses the default tracker to send the event to the
 			// Google Analytics property with tracking ID GA_MEASUREMENT_ID.
 			// example: ga('send', 'event', 'Videos', 'play', 'Fall Campaign');
+			// noninteraction seems to have been working like this in analytics.js.
+			if ( non_interaction == 1 ) {
+				label = { 'nonInteraction': 1 };
+			}
 			if ( typeof value === 'undefined' ) {
 				ga( 'send', type, category, action, label );
 			} else {
@@ -182,16 +185,16 @@
 		wp_analytics_tracking_setup();
 		if ( 'undefined' !== typeof analytics_tracking_settings.track_adblocker && true === analytics_tracking_settings.track_adblocker.enabled ) {
 			if ( typeof window.adblockDetector === 'undefined' ) {
-				wp_analytics_tracking_event( 'event', 'Adblock', 'On', { 'nonInteraction': 1 } );
+				wp_analytics_tracking_event( 'event', 'Adblock', 'On', 'Adblocker Status', undefined, 1 );
 			} else {
 				window.adblockDetector.init(
 					{
 						debug: false,
 						found: function() {
-							wp_analytics_tracking_event( 'event', 'Adblock', 'On', { 'nonInteraction': 1 } );
+							wp_analytics_tracking_event( 'event', 'Adblock', 'On', 'Adblocker Status', undefined, 1 );
 						},
 						notFound: function() {
-							wp_analytics_tracking_event( 'event', 'Adblock', 'Off', { 'nonInteraction': 1 } );
+							wp_analytics_tracking_event( 'event', 'Adblock', 'Off', 'Adblocker Status', undefined, 1 );
 						}
 					}
 				);
