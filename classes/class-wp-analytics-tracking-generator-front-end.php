@@ -84,7 +84,8 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				$custom_dimensions = $this->get_custom_dimensions();
 
 				// for gtagjs template. analyticsjs template includes optimize directly, according to settings.
-				if ( 'gtag.js' === $type ) {
+				// the value does not have a dot in it.
+				if ( 'gtagjs' === $type ) {
 					$tracking_config = array();
 					if ( $disable_pageview ) {
 						$tracking_config['send_page_view'] = false;
