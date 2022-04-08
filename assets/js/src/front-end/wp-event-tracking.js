@@ -48,7 +48,7 @@
 		}
 		var scrollDepthSettings = [];
 		if ( 'undefined' !== typeof analytics_tracking_settings ) {
-			if ( 'undefined' !== typeof analytics_tracking_settings.scroll && true === analytics_tracking_settings.scroll.enabled ) {
+			if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll && true === analytics_scrolldepth_settings.scroll.enabled ) {
 				// this needs to be true, regardless, because otherwise the assumption is that the tracking is defined in Google Tag Manager.
 				// todo: it might be worth building a setting for this.
 				scrollDepthSettings['gtmOverride'] = true;
@@ -58,37 +58,41 @@
 				}
 
 				// value is a string
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.minimum_height && '0' !== analytics_tracking_settings.scroll.minimum_height ) {
-					scrollDepthSettings['minimum_height'] = analytics_tracking_settings.scroll.minimum_height;
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.minimum_height && '0' !== analytics_scrolldepth_settings.scroll.minimum_height ) {
+					scrollDepthSettings['minimum_height'] = analytics_scrolldepth_settings.scroll.minimum_height;
 				}
 
 				// value is a boolean. default is true.
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.percentage && 'true' !== analytics_tracking_settings.scroll.percentage ) {
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.percentage && 'true' !== analytics_scrolldepth_settings.scroll.percentage ) {
 					scrollDepthSettings['percentage'] = false;
 				}
 
 				// value is a boolean. default is true.
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.user_timing && 'true' !== analytics_tracking_settings.scroll.user_timing ) {
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.user_timing && 'true' !== analytics_scrolldepth_settings.scroll.user_timing ) {
 					scrollDepthSettings['user_timing'] = false;
 				}
 
 				// value is a boolean. default is true.
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.pixel_depth && 'true' !== analytics_tracking_settings.scroll.user_timing ) {
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.pixel_depth && 'true' !== analytics_scrolldepth_settings.scroll.user_timing ) {
 					scrollDepthSettings['pixel_depth'] = false;
 				}
 
 				// value is a boolean. default is true.
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.non_interaction && 'true' !== analytics_tracking_settings.scroll.non_interaction ) {
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.non_interaction && 'true' !== analytics_scrolldepth_settings.scroll.non_interaction ) {
 					scrollDepthSettings['non_interaction'] = false;
 				}
 
 				// value is an array. default is empty.
-				if ( 'undefined' !== typeof analytics_tracking_settings.scroll.scroll_elements ) {
-					scrollDepthSettings['elements'] = $.map( analytics_tracking_settings.scroll.scroll_elements.split( ',' ), $.trim );
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.scroll_elements ) {
+					scrollDepthSettings['elements'] = $.map( analytics_scrolldepth_settings.scroll.scroll_elements.split( ',' ), $.trim );
 				}
-				
+
 				// send scroll settings to the scrolldepth plugin
-				jQuery.scrollDepth( scrollDepthSettings );
+				if ( 'undefined' !== typeof analytics_scrolldepth_settings.scroll.use_jquery && true === analytics_scrolldepth_settings.scroll.use_jquery ) {
+					jQuery.scrollDepth( scrollDepthSettings );
+				} else {
+					gascrolldepth.init( scrollDepthSettings );
+				}	
 			}
 
 			if ( 'undefined' !== typeof analytics_tracking_settings.special && true === analytics_tracking_settings.special.enabled ) {
@@ -177,30 +181,11 @@
 		        });
 			}
 
-		} else {
-			console.log( 'no analytics_tracking_settings' );
 		}
 	}
 
 	$( document ).ready( function() {
 		wp_analytics_tracking_setup();
-		if ( 'undefined' !== typeof analytics_tracking_settings.track_adblocker && true === analytics_tracking_settings.track_adblocker.enabled ) {
-			if ( typeof window.adblockDetector === 'undefined' ) {
-				wp_analytics_tracking_event( 'event', 'Adblock', 'On', 'Adblocker Status', undefined, 1 );
-			} else {
-				window.adblockDetector.init(
-					{
-						debug: false,
-						found: function() {
-							wp_analytics_tracking_event( 'event', 'Adblock', 'On', 'Adblocker Status', undefined, 1 );
-						},
-						notFound: function() {
-							wp_analytics_tracking_event( 'event', 'Adblock', 'Off', 'Adblocker Status', undefined, 1 );
-						}
-					}
-				);
-			}
-		}
 	});
 
 } )( jQuery );

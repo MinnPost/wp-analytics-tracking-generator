@@ -126,9 +126,18 @@ class WP_Analytics_Tracking_Generator_Front_End {
 
 		// scroll depth settings
 		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
+		$use_jquery     = filter_var( get_option( $this->option_prefix . 'use_jquery', false ), FILTER_VALIDATE_BOOLEAN );
 		if ( true === $scroll_enabled ) {
-			$settings['scroll'] = array(
+
+			if ( true === $use_jquery ) {
+				wp_enqueue_script( $this->slug . '-scrolldepth', plugins_url( $this->slug . '/assets/js/vendor/jquery.scrolldepth.min.js', dirname( $this->file ) ), array( 'jquery', $this->slug . '-front-end' ), $this->version, true );
+			} else {
+				wp_enqueue_script( $this->slug . '-scrolldepth', plugins_url( $this->slug . '/assets/js/vendor/gascrolldepth.min.js', dirname( $this->file ) ), array( $this->slug . '-front-end' ), $this->version, true );
+			}
+
+			$scroll_settings = array(
 				'enabled'         => $scroll_enabled,
+				'use_jquery'      => $use_jquery,
 				'minimum_height'  => ( '' !== get_option( $this->option_prefix . 'minimum_height', 0 ) ) ? get_option( $this->option_prefix . 'minimum_height', 0 ) : 0,
 				'percentage'      => ( '' !== get_option( $this->option_prefix . 'track_scroll_percentage', true ) ) ? get_option( $this->option_prefix . 'track_scroll_percentage', true ) : true,
 				'user_timing'     => ( '' !== get_option( $this->option_prefix . 'track_user_timing', true ) ) ? get_option( $this->option_prefix . 'track_user_timing', true ) : true,
@@ -136,8 +145,11 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				'non_interaction' => ( '' !== get_option( $this->option_prefix . 'non_interaction', true ) ) ? get_option( $this->option_prefix . 'non_interaction', true ) : true,
 			);
 			if ( ! empty( get_option( $this->option_prefix . 'scroll_depth_elements', array() ) ) ) {
-				$settings['scroll']['scroll_elements'] = get_option( $this->option_prefix . 'scroll_depth_elements', array() );
+				$scroll_settings['scroll_elements'] = get_option( $this->option_prefix . 'scroll_depth_elements', array() );
 			}
+			// otherwise, the booleans get messed up.
+			$localized_scroll_settings['scroll'] = $scroll_settings;
+			wp_localize_script( $this->slug . '-scrolldepth', 'analytics_scrolldepth_settings', $localized_scroll_settings );
 		}
 
 		// special links
