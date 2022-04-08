@@ -65,131 +65,123 @@ msgstr ""
 msgid "Track page scroll depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:348
-msgid "Use jQuery?"
-msgstr ""
-
-#: classes/class-wp-analytics-tracking-generator-admin.php:355
-msgid "Check this box if you are already using jQuery. If not, leave it blank to use a different library."
-msgstr ""
-
-#: classes/class-wp-analytics-tracking-generator-admin.php:360
+#: classes/class-wp-analytics-tracking-generator-admin.php:362
 msgid "Minimum height"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:367
+#: classes/class-wp-analytics-tracking-generator-admin.php:369
 msgid "Enter a pixel height for pages if applicable. Otherwise, 0 is the default."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:372
+#: classes/class-wp-analytics-tracking-generator-admin.php:374
 msgid "Scroll depth elements"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:378
+#: classes/class-wp-analytics-tracking-generator-admin.php:380
 msgid "Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:384
+#: classes/class-wp-analytics-tracking-generator-admin.php:386
 msgid "Track scroll percentage?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:391
+#: classes/class-wp-analytics-tracking-generator-admin.php:393
 msgid "Setting this to false will cause the plugin to only track the elements above."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:396
+#: classes/class-wp-analytics-tracking-generator-admin.php:398
 msgid "Track user timing?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:403
+#: classes/class-wp-analytics-tracking-generator-admin.php:405
 msgid "Setting this to false will turn off User Timing events."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:408
+#: classes/class-wp-analytics-tracking-generator-admin.php:410
 msgid "Track pixel depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:415
+#: classes/class-wp-analytics-tracking-generator-admin.php:417
 msgid "Setting this to false will turn off Pixel Depth events."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:420
+#: classes/class-wp-analytics-tracking-generator-admin.php:422
 msgid "Use nonInteraction?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:427
+#: classes/class-wp-analytics-tracking-generator-admin.php:429
 msgid "Scroll events will not impact bounce rate if this value is true."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:432
+#: classes/class-wp-analytics-tracking-generator-admin.php:434
 msgid "Track downloads, mailto, telephone, outbound links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:443
+#: classes/class-wp-analytics-tracking-generator-admin.php:445
 msgid "Download regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:455
+#: classes/class-wp-analytics-tracking-generator-admin.php:457
 msgid "Track affiliate links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:466
+#: classes/class-wp-analytics-tracking-generator-admin.php:468
 msgid "Affiliate regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:478
+#: classes/class-wp-analytics-tracking-generator-admin.php:480
 msgid "Track fragment links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:485
+#: classes/class-wp-analytics-tracking-generator-admin.php:487
 msgid "Checking this will cause the tracker to send a pageview event when a #hash link is clicked"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:489
+#: classes/class-wp-analytics-tracking-generator-admin.php:491
 msgid "Track form submissions?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:548
+#: classes/class-wp-analytics-tracking-generator-admin.php:550
 msgid "Available Dimensions"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:566
+#: classes/class-wp-analytics-tracking-generator-admin.php:568
 msgid "Enter a global WordPress variable for each dimension you have in Analytics. You can also use the wp_analytics_tracking_generator_add_dimension hook."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:571
+#: classes/class-wp-analytics-tracking-generator-admin.php:573
 msgid "Dimension "
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:646
+#: classes/class-wp-analytics-tracking-generator-admin.php:648
 msgid "Speed sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:657
+#: classes/class-wp-analytics-tracking-generator-admin.php:659
 msgid "User sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:667
+#: classes/class-wp-analytics-tracking-generator-admin.php:669
 msgid "Exclude users with Do Not Track header?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:677
+#: classes/class-wp-analytics-tracking-generator-admin.php:679
 msgid "Enable remarketing, demographics, interest reports?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:687
+#: classes/class-wp-analytics-tracking-generator-admin.php:689
 msgid "Exclude events from bounce-rate and time on page?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:697
+#: classes/class-wp-analytics-tracking-generator-admin.php:699
 msgid "Enable enhanced link attribution?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:707
+#: classes/class-wp-analytics-tracking-generator-admin.php:709
 msgid "Use hitCallback to increase event accuracy?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:717
+#: classes/class-wp-analytics-tracking-generator-admin.php:719
 msgid "Enable Force SSL?"
 msgstr ""
 
