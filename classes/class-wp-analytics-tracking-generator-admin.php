@@ -484,17 +484,6 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc' => '',
 				),
 			),
-			'track_adblocker_status'  => array(
-				'title'    => __( 'Track ad blocker status?', 'wp-analytics-tracking-generator' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field-track-adblocker',
-				'args'     => array(
-					'type' => 'checkbox',
-					'desc' => 'If checked, this will create an "off" and an "on" event. Off is if an ad blocker is not detected',
-				),
-			),
 		);
 
 		foreach ( $settings as $key => $attributes ) {
