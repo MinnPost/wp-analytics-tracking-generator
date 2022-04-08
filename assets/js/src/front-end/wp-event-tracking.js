@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	function checkAnalyticsVersion() {
+	function wp_analytics_check_analytics_version() {
 		var version = '';
 		if ( 'undefined' !== typeof analytics_tracking_settings && 'undefined' !== typeof analytics_tracking_settings.analytics_type ) {
 			if ( 'gtagjs' === analytics_tracking_settings.analytics_type && 'function' === typeof gtag ) {
@@ -20,7 +20,7 @@
 	 * value: optional
 	*/
 	function wp_analytics_tracking_event( type, category, action, label, value, non_interaction ) {
-		var version = checkAnalyticsVersion();
+		var version = wp_analytics_check_analytics_version();
 		if ( version === 'gtag' ) {
 			// Sends the event to the Google Analytics property with
 			// tracking ID GA_MEASUREMENT_ID set by the config command in
@@ -54,7 +54,7 @@
 	}
 
 	function wp_analytics_tracking_setup() {
-		var version = checkAnalyticsVersion();
+		var version = wp_analytics_check_analytics_version();
 		if ( version === '') {
 			return;
 		}
