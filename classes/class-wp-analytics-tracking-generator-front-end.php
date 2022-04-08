@@ -82,6 +82,9 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
 				$optimize_id      = defined( 'WP_ANALYTICS_OPTIMIZE_CONTAINER_ID' ) ? WP_ANALYTICS_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
 
+				$enable_extra_reports = get_option( $this->option_prefix . 'enable_extra_reports', false );
+				$enable_extra_reports = filter_var( $enable_extra_reports, FILTER_VALIDATE_BOOLEAN );
+
 				$custom_dimensions = $this->get_custom_dimensions();
 
 				// for gtagjs template. analyticsjs template includes optimize directly, according to settings.
