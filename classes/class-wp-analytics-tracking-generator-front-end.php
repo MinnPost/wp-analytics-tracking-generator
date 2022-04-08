@@ -127,6 +127,10 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		// scroll depth settings
 		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
 		$use_jquery     = filter_var( get_option( $this->option_prefix . 'use_jquery', false ), FILTER_VALIDATE_BOOLEAN );
+		// as of April 2022, only the jQuery version works with gtag.
+		if ( 'gtagjs' === $analytics_type ) {
+			$use_jquery = true;
+		}
 		if ( true === $scroll_enabled ) {
 
 			if ( true === $use_jquery ) {

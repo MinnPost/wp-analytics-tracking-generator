@@ -344,7 +344,9 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc' => '',
 				),
 			),
-			'use_jquery'             => array(
+			/*
+			// currently, only the jQuery version supports gtag.
+			'use_jquery'              => array(
 				'title'    => __( 'Use jQuery?', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
@@ -355,7 +357,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc'     => __( 'Check this box if you are already using jQuery. If not, leave it blank to use a different library.', 'wp-analytics-tracking-generator' ),
 					'constant' => '',
 				),
-			),
+			),*/
 			'minimum_height'          => array(
 				'title'    => __( 'Minimum height', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
