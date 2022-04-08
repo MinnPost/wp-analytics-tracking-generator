@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	function wp_analytics_check_analytics_version() {
+	function wpAnalyticsCheckAnalyticsVersion() {
 		var version = '';
 		if ( 'undefined' !== typeof analytics_tracking_settings && 'undefined' !== typeof analytics_tracking_settings.analytics_type ) {
 			if ( 'gtagjs' === analytics_tracking_settings.analytics_type && 'function' === typeof gtag ) {
@@ -19,9 +19,9 @@
 	 * action: Event Action
 	 * value: optional
 	*/
-	function wp_analytics_tracking_event( type, category, action, label, value, non_interaction ) {
-		var version = wp_analytics_check_analytics_version();
-		if ( version === 'gtag' ) {
+	function wpAnalyticsTrackingEvent( type, category, action, label, value, non_interaction ) {
+		var version = wpAnalyticsCheckAnalyticsVersion();
+		if ( 'gtag' === version ) {
 			// Sends the event to the Google Analytics property with
 			// tracking ID GA_MEASUREMENT_ID set by the config command in
 			// the global tracking snippet.
@@ -30,14 +30,14 @@
 				'event_category': category,
 				'event_label': label
 			};
-			if ( typeof value !== 'undefined' ) {
+			if ( 'undefined' !== typeof value ) {
 				params.value = value;
 			}
-			if ( typeof non_interaction !== 'undefined' ) {
+			if ( 'undefined' !== typeof non_interaction ) {
 				params.non_interaction = non_interaction;
 			}
 			gtag( type, action, params );
-		} else if ( version === 'ga' ) {
+		} else if ( 'ga' === version ) {
 			// Uses the default tracker to send the event to the
 			// Google Analytics property with tracking ID GA_MEASUREMENT_ID.
 			// example: ga('send', 'event', 'Videos', 'play', 'Fall Campaign');
@@ -45,7 +45,7 @@
 			if ( non_interaction == 1 ) {
 				value = { 'nonInteraction': 1 };
 			}
-			if ( typeof value === 'undefined' ) {
+			if ( 'undefined' === typeof value ) {
 				ga( 'send', type, category, action, label );
 			} else {
 				ga( 'send', type, category, action, label, value );
@@ -53,9 +53,9 @@
 		}
 	}
 
-	function wp_analytics_tracking_setup() {
-		var version = wp_analytics_check_analytics_version();
-		if ( version === '') {
+	function wpAnalyticsTrackingSetup() {
+		var version = wpAnalyticsCheckAnalyticsVersion();
+		if ( '' === version ) {
 			return;
 		}
 
@@ -113,17 +113,17 @@
 
 			// external links
 			$( 'a[href^="http"]:not([href*="://' + document.domain + '"])' ).click( function() {
-				wp_analytics_tracking_event( 'event', 'Outbound links', 'Click', this.href );
+				wpAnalyticsTrackingEvent( 'event', 'Outbound links', 'Click', this.href );
 			});
 
 			// mailto links
 			$( 'a[href^="mailto"]' ).click( function() {
-				wp_analytics_tracking_event( 'event', 'Mails', 'Click', this.href.substring( 7 ) );
+				wpAnalyticsTrackingEvent( 'event', 'Mails', 'Click', this.href.substring( 7 ) );
 			});
 
 			// tel links
 			$( 'a[href^="tel"]' ).click( function() {
-				wp_analytics_tracking_event( 'event', 'Telephone', 'Call', this.href.substring( 7 ) );
+				wpAnalyticsTrackingEvent( 'event', 'Telephone', 'Call', this.href.substring( 7 ) );
 			});
 
 			// internal links
@@ -144,7 +144,7 @@
 							extension = extensionResult;
 						}
 						// we can't use the url for the value here, even though that would be nice, because value is supposed to be an integer
-						wp_analytics_tracking_event( 'event', 'Downloads', extension, this.href );
+						wpAnalyticsTrackingEvent( 'event', 'Downloads', extension, this.href );
 					}
 				}
 			});
@@ -159,7 +159,7 @@
 					var checkAffiliate = new RegExp( "\\.(" + analytics_tracking_settings.affiliate.affiliate_regex + ")([\?#].*)?$", "i" );
 					var isAffiliate = checkAffiliate.test( url );
 					if ( true === isAffiliate ) {
-						wp_analytics_tracking_event( 'event', 'Affiliate', 'Click', this.href );
+						wpAnalyticsTrackingEvent( 'event', 'Affiliate', 'Click', this.href );
 					}
 				}
 
@@ -193,13 +193,13 @@
 				var category = $( button ).data( 'ga-category' ) || 'Form';
 				var action = $( button ).data( 'ga-action' ) || 'Submit';
 				var label = $( button ).data( 'ga-label' ) || $( button ).text() || button.value || button.name;
-				wp_analytics_tracking_event( 'event', category, action, label );
+				wpAnalyticsTrackingEvent( 'event', category, action, label );
 			});
 		}
 	}
 
 	$( document ).ready( function() {
-		wp_analytics_tracking_setup();
+		wpAnalyticsTrackingSetup();
 	});
 
 } )( jQuery );
