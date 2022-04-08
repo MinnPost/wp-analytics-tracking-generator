@@ -49,10 +49,11 @@
 		var scrollDepthSettings = [];
 		if ( 'undefined' !== typeof analytics_tracking_settings ) {
 			if ( 'undefined' !== typeof analytics_tracking_settings.scroll && true === analytics_tracking_settings.scroll.enabled ) {
-
+				// this needs to be true, regardless, because otherwise the assumption is that the tracking is defined in Google Tag Manager.
+				// todo: it might be worth building a setting for this.
+				scrollDepthSettings['gtmOverride'] = true;
 				// value is a string and a boolean
 				if ( 'undefined' !== typeof analytics_tracking_settings.analytics_type && 'gtagjs' !== analytics_tracking_settings.analytics_type ) {
-					scrollDepthSettings['gtmOverride'] = true;
 					scrollDepthSettings['gaGlobal'] = 'ga';
 				}
 
