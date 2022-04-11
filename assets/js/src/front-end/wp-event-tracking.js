@@ -13,6 +13,14 @@
 	}
 
 	/*
+	 * call hooks from other plugins or themes
+	 *
+	*/
+	if ( typeof wp !== 'undefined' ) {
+		wp.hooks.addAction( 'wpAnalyticsTrackingGeneratorEvent', 'wpAnalyticsTrackingGenerator', wpAnalyticsTrackingEvent, 10 );
+	}
+
+	/*
 	 * Create a Google Analytics event
 	 * category: Event Category
 	 * label: Event Label
