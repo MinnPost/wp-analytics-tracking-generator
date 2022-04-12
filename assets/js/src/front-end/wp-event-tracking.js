@@ -18,6 +18,7 @@
 	*/
 	if ( typeof wp !== 'undefined' ) {
 		wp.hooks.addAction( 'wpAnalyticsTrackingGeneratorEvent', 'wpAnalyticsTrackingGenerator', wpAnalyticsTrackingEvent, 10 );
+		wp.hooks.addAction( 'wpAnalyticsTrackingGeneratorEcommerceAction', 'wpAnalyticsTrackingGenerator', wpAnalyticsTrackingEcommerceAction, 10 );
 	}
 
 	/*
@@ -58,6 +59,36 @@
 			} else {
 				ga( 'send', type, category, action, label, value );
 			}
+		}
+	}
+
+	/*
+	 * Create a Google Analytics Ecommerce action
+	 * 
+	*/
+	function wpAnalyticsTrackingEcommerceAction( type, action, product ) {
+		var version = wpAnalyticsCheckAnalyticsVersion();
+		if ( 'gtag' === version ) {
+			gtag( type, action, {
+				"items": [
+					product
+				]
+			} );
+		} else if ( 'ga' === version ) {
+			ga( 'require', 'ec' );
+			ga( 'ec:addProduct', product );
+			switch( action) {
+				case 'add_to_cart':
+					ga('ec:setAction', 'add');
+				break;
+				case 'begin_checkout':
+					ga( 'ec:setAction', 'checkout', {
+						'step': 1,
+					});
+				break;
+				default:
+				  // code block
+			  }
 		}
 	}
 
