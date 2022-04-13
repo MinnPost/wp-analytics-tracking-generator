@@ -79,7 +79,7 @@
 			ga( 'ec:addProduct', product );
 			switch( action) {
 				case 'add_to_cart':
-					ga('ec:setAction', 'add');
+					ga( 'ec:setAction', 'add' );
 				break;
 				case 'begin_checkout':
 					ga( 'ec:setAction', 'checkout', {
