@@ -715,16 +715,6 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc' => '',
 				),
 			),
-			'enable_force_ssl'                 => array(
-				'title'    => __( 'Enable Force SSL?', 'wp-analytics-tracking-generator' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type' => 'checkbox',
-					'desc' => '',
-				),
-			),
 		);
 
 		foreach ( $settings as $key => $attributes ) {

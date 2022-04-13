@@ -181,10 +181,6 @@ msgstr ""
 msgid "Use hitCallback to increase event accuracy?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:719
-msgid "Enable Force SSL?"
-msgstr ""
-
 #: templates/admin/settings.php:6
 msgid "Save settings"
 msgstr ""
