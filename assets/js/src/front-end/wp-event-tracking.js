@@ -66,7 +66,7 @@
 	 * Create a Google Analytics Ecommerce action
 	 * 
 	*/
-	function wpAnalyticsTrackingEcommerceAction( type, action, product ) {
+	function wpAnalyticsTrackingEcommerceAction( type, action, product, step ) {
 		var version = wpAnalyticsCheckAnalyticsVersion();
 		if ( 'gtag' === version ) {
 			gtag( type, action, {
@@ -78,16 +78,16 @@
 			ga( 'require', 'ec' );
 			ga( 'ec:addProduct', product );
 			switch( action) {
+				case 'select_content':
+					ga( 'ec:setAction', 'detail' );
+				break;
 				case 'add_to_cart':
 					ga( 'ec:setAction', 'add' );
 				break;
 				case 'begin_checkout':
 					ga( 'ec:setAction', 'checkout', {
-						'step': 1,
+						'step': step,
 					});
-				break;
-				case 'select_content':
-					ga( 'ec:setAction', 'detail' );
 				break;
 				default:
 			  }
