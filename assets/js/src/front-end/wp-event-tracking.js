@@ -86,8 +86,10 @@
 						'step': 1,
 					});
 				break;
+				case 'select_content':
+					ga( 'ec:setAction', 'detail' );
+				break;
 				default:
-				  // code block
 			  }
 		}
 	}
