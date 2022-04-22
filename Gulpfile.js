@@ -1,39 +1,53 @@
 // Require our dependencies
-const autoprefixer = require('autoprefixer');
-const babel = require('gulp-babel');
-const browserSync = require('browser-sync').create();
-const concat = require('gulp-concat');
-const cssnano = require('cssnano');
-const fs = require('fs');
-const gulp = require('gulp');
-const packagejson = JSON.parse(fs.readFileSync('./package.json'));
-const mqpacker = require( 'css-mqpacker' );
-const order = require( 'gulp-order' );
-const plumber = require('gulp-plumber');
-const postcss = require('gulp-postcss');
-const rename = require('gulp-rename');
-const sass = require('gulp-sass');
-const sassGlob = require('gulp-sass-glob');
-const sort = require( 'gulp-sort' );
-const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
-const wpPot = require('gulp-wp-pot');
+const autoprefixer = require("autoprefixer");
+const babel = require("gulp-babel");
+const browserSync = require("browser-sync").create();
+const concat = require("gulp-concat");
+const cssnano = require("cssnano");
+const eslint = require("gulp-eslint");
+const fs = require("fs");
+const gulp = require("gulp");
+const iife = require('gulp-iife');
+const packagejson = JSON.parse(fs.readFileSync("./package.json"));
+const mqpacker = require("css-mqpacker");
+const plumber = require("gulp-plumber");
+const postcss = require("gulp-postcss");
+const rename = require("gulp-rename");
+const sass = require('gulp-sass')(require('sass'));
+const sassGlob = require("gulp-sass-glob");
+const sort = require("gulp-sort");
+const gulpStylelint = require("@ronilaukkarinen/gulp-stylelint");
+const sourcemaps = require("gulp-sourcemaps");
+const uglify = require("gulp-uglify");
+const wpPot = require("gulp-wp-pot");
 
 // Some config data for our tasks
 const config = {
   styles: {
-    admin_src: 'assets/sass/*.scss',
-    dest: './assets/css'
-  },
+		admin: "assets/sass/" + packagejson.name + "-admin.scss",
+		srcDir: "assets/sass/*.scss",
+		dest: "assets/css",
+		lint_dest: "assets/sass/"
+	},
   scripts: {
-    admin_src: './assets/js/src/admin/**/*.js',
-    front_end_src: [ './assets/js/src/front-end/**/*.js' ],
-    uglify: [ 'assets/js/*.js', '!assets/js/*.min.js' ],
-    dest: './assets/js'
-  },
+		admin: "./assets/js/src/admin/**/*.js",
+		admin_lint: "./assets/js/src/admin/",
+		front_end: "./assets/js/src/front-end/**/*.js",
+		front_end_lint: "./assets/js/src/front-end/",
+		uglify: ["assets/js/*.js", "!assets/js/*.min.js"],
+		dest: "./assets/js"
+	},
   languages: {
-    src: [ './**/*.php', '!vendor/*' ],
-    dest: './languages/' + packagejson.name + '.pot'
+		src: [
+			"./**/*.php",
+			"!.git/*",
+			"!.svn/*",
+			"!bin/**/*",
+			"!node_modules/*",
+			"!release/**/*",
+			"!vendor/**/*"
+		],
+    dest: "./languages/" + packagejson.name + ".pot"
   },
   browserSync: {
     active: false,
@@ -42,113 +56,193 @@ const config = {
 };
 
 function adminstyles() {
-  return gulp.src(config.styles.admin_src, { allowEmpty: true })
-    .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
-    .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
-    .pipe(sass()) // Compile
-    .on('error', sass.logError) // Error reporting
-    .pipe(postcss([
-      mqpacker( {
-        'sort': true
-      } ),
-      autoprefixer(),
-      cssnano( {
-        'safe': true // Use safe optimizations.
-      } ) // Minify
-    ]))
-    .pipe(rename({ // Rename to .min.css
-      suffix: '.min'
+	return gulp
+		.src(config.styles.admin, { allowEmpty: true })
+		.pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
+		.pipe(sassGlob()) // Allow for globbed @import statements in SCSS
+		.pipe(sass()) // Compile
+		.on("error", sass.logError) // Error reporting
+		.pipe(
+			postcss([
+				mqpacker({
+					sort: true
+				}),
+				autoprefixer(),
+				cssnano({
+					safe: true // Use safe optimizations.
+				}) // Minify
+			])
+		)
+		.pipe(
+			rename({
+				// Rename to .min.css
+				suffix: ".min"
+			})
+		)
+		.pipe(sourcemaps.write()) // Write the sourcemap files
+		.pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
+		.pipe(browserSync.stream());
+}
+
+function adminsasslint() {
+  return gulp.src(config.styles.admin)
+    .pipe(gulpStylelint({
+      fix: true,
+	  reporters: [
+        {formatter: 'string', console: true}
+      ],
     }))
-    .pipe(sourcemaps.write()) // Write the sourcemap files
-    .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest(config.styles.lint_dest));
 }
 
 function adminscripts() {
-  return gulp.src(config.scripts.admin_src, { allowEmpty: true })
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-      presets: ['@babel/preset-env']
-    }))
-    .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.scripts.dest))
-    .pipe(browserSync.stream());
+	return gulp
+		.src(config.scripts.admin)
+		.pipe(sourcemaps.init())
+		.pipe(
+			babel({
+				presets: ["@babel/preset-env"]
+			})
+		)
+		.pipe(concat(packagejson.name + "-admin.js")) // Concatenate
+		.pipe(sourcemaps.write())
+		.pipe(eslint( {
+			parserOptions: {
+				requireConfigFile: false
+			}}
+		))
+		.pipe(iife({
+	      useStrict: false,
+	      params: ['$'],
+	      args: ['jQuery']
+	    }))
+		.pipe(gulp.dest(config.scripts.dest))
+		.pipe(browserSync.stream());
 }
 
 function frontendscripts() {
-  return gulp.src(config.scripts.front_end_src)
-    .pipe(order([
-      'vendor/**/*.js',  // other files in the ./src/vendor directory
-      'front-end/**/*.js' // files in the ./src/front-end directory
-    ])
-    )
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-      presets: ['@babel/preset-env']
+	return gulp
+		.src(config.scripts.front_end)
+		.pipe(sourcemaps.init())
+		.pipe(
+			babel({
+				presets: ["@babel/preset-env"]
+			})
+		)
+		.pipe(concat(packagejson.name + "-front-end.js")) // Concatenate
+		.pipe(sourcemaps.write())
+		.pipe(eslint( {
+			parserOptions: {
+				requireConfigFile: false
+			}}
+		))
+    .pipe(iife({
+      useStrict: false,
+      params: ['$'],
+      args: ['jQuery']
     }))
-    .pipe(concat( packagejson.name + '-front-end.js')) // Concatenate
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.scripts.dest))
-    .pipe(browserSync.stream());
+		.pipe(gulp.dest(config.scripts.dest))
+		.pipe(browserSync.stream());
 }
 
+function adminscriptlint() {
+	return gulp
+		.src(config.scripts.admin)
+		.pipe(eslint( {
+				fix:true,
+				parserOptions: {
+					requireConfigFile: false
+				}
+			}
+		))
+		.pipe(eslint.format())
+		.pipe(gulp.dest(config.scripts.admin_lint))
+		// Brick on failure to be super strict
+		//.pipe(eslint.failOnError());
+};
+
+function frontendscriptlint() {
+	return gulp
+		.src(config.scripts.front_end)
+		.pipe(eslint( {
+				fix:true,
+				parserOptions: {
+					requireConfigFile: false
+				}
+			}
+		))
+		.pipe(eslint.format())
+		.pipe(gulp.dest(config.scripts.front_end_lint))
+		// Brick on failure to be super strict
+		//.pipe(eslint.failOnError());
+};
+
 function uglifyscripts() {
-  return gulp.src(config.scripts.uglify)
-    .pipe(uglify()) // Minify + compress
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    //.pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.scripts.dest))
-    .pipe(browserSync.stream());
+	return (
+		gulp
+			.src(config.scripts.uglify)
+			.pipe(uglify()) // Minify + compress
+			.pipe(
+				rename({
+					suffix: ".min"
+				})
+			)
+			.pipe(sourcemaps.write())
+			.pipe(gulp.dest(config.scripts.dest))
+			.pipe(browserSync.stream())
+	);
 }
 
 // Generates translation file.
 function translate() {
-    return gulp
-      .src( config.languages.src )
-      .pipe( wpPot( {
-        domain: packagejson.name,
-        package: packagejson.name
-      } ) )
-      .pipe( gulp.dest( config.languages.dest ) );
+	return gulp
+		.src(config.languages.src)
+		.pipe(
+			wpPot({
+				domain: packagejson.name,
+				package: packagejson.name
+			})
+		)
+		.pipe(gulp.dest(config.languages.dest));
 }
 
 // Injects changes into browser
 function browserSyncTask() {
-  if (config.browserSync.active) {
-    browserSync.init({
-      proxy: config.browserSync.localURL
-    });
-  }
+	if (config.browserSync.active) {
+		browserSync.init({
+			proxy: config.browserSync.localURL
+		});
+	}
 }
 
 // Reloads browsers that are using browsersync
 function browserSyncReload(done) {
-  browserSync.reload();
-  done();
+	browserSync.reload();
+	done();
 }
 
 // Watch directories, and run specific tasks on file changes
 function watch() {
-  gulp.watch(config.styles.admin_src, adminstyles);
-  gulp.watch(config.scripts.admin_src, adminscripts);
-  
-  // Reload browsersync when PHP files change, if active
-  if (config.browserSync.active) {
-    gulp.watch('./**/*.php', browserSyncReload);
-  }
+	gulp.watch(config.styles.srcDir, styles);
+	gulp.watch(config.scripts.admin, adminscripts);
+
+	// Reload browsersync when PHP files change, if active
+	if (config.browserSync.active) {
+		gulp.watch("./**/*.php", browserSyncReload);
+	}
 }
 
 // define complex gulp tasks
-const styles  = gulp.series(adminstyles);
-const scripts = gulp.series(frontendscripts, adminscripts, uglifyscripts);
-const build   = gulp.series(gulp.parallel(styles, scripts, translate));
+const lint = gulp.series(adminsasslint, adminscriptlint, frontendscriptlint);
+const styles = gulp.series(adminstyles);
+const scripts = gulp.series(adminscripts, frontendscripts, uglifyscripts);
+const build = gulp.series(lint, gulp.parallel(styles, scripts, translate));
 
 // export tasks
-exports.styles    = styles;
-exports.scripts   = scripts;
+exports.styles = styles;
+exports.scripts = scripts;
+exports.lint = lint;
 exports.translate = translate;
-exports.watch     = watch;
-exports.default   = build;
+exports.watch = watch;
+exports.build = build;
+exports.default = build;

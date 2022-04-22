@@ -8,10 +8,11 @@ $border-color-lighter: #e5e5e5;
 	background: $background;
 	border: 1px solid $border-color-lighter;
 	width: 100%;
+
 	caption {
 		background: $background;
 		text-align: left;
-		font-weight: bold;
+		font-weight: 700;
 		font-size: 1.25em;
 		padding: 1em 0.5em 0;
 	}
