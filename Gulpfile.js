@@ -1,39 +1,53 @@
 // Require our dependencies
-const autoprefixer = require('autoprefixer');
-const babel = require('gulp-babel');
-const browserSync = require('browser-sync').create();
-const concat = require('gulp-concat');
-const cssnano = require('cssnano');
-const fs = require('fs');
-const gulp = require('gulp');
-const packagejson = JSON.parse(fs.readFileSync('./package.json'));
-const mqpacker = require( 'css-mqpacker' );
-const order = require( 'gulp-order' );
-const plumber = require('gulp-plumber');
-const postcss = require('gulp-postcss');
-const rename = require('gulp-rename');
-const sass = require('gulp-sass');
-const sassGlob = require('gulp-sass-glob');
-const sort = require( 'gulp-sort' );
-const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
-const wpPot = require('gulp-wp-pot');
+const autoprefixer = require("autoprefixer");
+const babel = require("gulp-babel");
+const browserSync = require("browser-sync").create();
+const concat = require("gulp-concat");
+const cssnano = require("cssnano");
+const eslint = require("gulp-eslint");
+const fs = require("fs");
+const gulp = require("gulp");
+const iife = require('gulp-iife');
+const packagejson = JSON.parse(fs.readFileSync("./package.json"));
+const mqpacker = require("css-mqpacker");
+const plumber = require("gulp-plumber");
+const postcss = require("gulp-postcss");
+const rename = require("gulp-rename");
+const sass = require('gulp-sass')(require('sass'));
+const sassGlob = require("gulp-sass-glob");
+const sort = require("gulp-sort");
+const gulpStylelint = require("@ronilaukkarinen/gulp-stylelint");
+const sourcemaps = require("gulp-sourcemaps");
+const uglify = require("gulp-uglify");
+const wpPot = require("gulp-wp-pot");
 
 // Some config data for our tasks
 const config = {
   styles: {
-    admin_src: 'assets/sass/*.scss',
-    dest: './assets/css'
-  },
+		admin: "assets/sass/" + packagejson.name + "-admin.scss",
+		srcDir: "assets/sass/*.scss",
+		dest: "assets/css",
+		lint_dest: "assets/sass/"
+	},
   scripts: {
-    admin_src: './assets/js/src/admin/**/*.js',
-    front_end_src: [ './assets/js/src/front-end/**/*.js' ],
-    uglify: [ 'assets/js/*.js', '!assets/js/*.min.js' ],
-    dest: './assets/js'
-  },
+		admin: "./assets/js/src/admin/**/*.js",
+		admin_lint: "./assets/js/src/admin/",
+		front_end: "./assets/js/src/front-end/**/*.js",
+		front_end_lint: "./assets/js/src/front-end/",
+		uglify: ["assets/js/*.js", "!assets/js/*.min.js"],
+		dest: "./assets/js"
+	},
   languages: {
-    src: [ './**/*.php', '!vendor/*' ],
-    dest: './languages/' + packagejson.name + '.pot'
+		src: [
+			"./**/*.php",
+			"!.git/*",
+			"!.svn/*",
+			"!bin/**/*",
+			"!node_modules/*",
+			"!release/**/*",
+			"!vendor/**/*"
+		],
+    dest: "./languages/" + packagejson.name + ".pot"
   },
   browserSync: {
     active: false,
