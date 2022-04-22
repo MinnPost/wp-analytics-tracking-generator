@@ -1,6 +1,6 @@
 {
   "name": "wp-analytics-tracking-generator",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Configurable Google Analytics tracking code only, no UI in WordPress.",
   "main": "Gulpfile.js",
   "repository": {
@@ -14,12 +14,12 @@
   },
   "homepage": "https://github.com/MinnPost/wp-analytics-tracking-generator#readme",
   "devDependencies": {
-    "@babel/core": "^7.17.8",
+    "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",
     "autoprefixer": "^10.4.4",
     "browser-sync": "^2.27.9",
     "css-mqpacker": "^7.0.0",
-    "cssnano": "^5.1.5",
+    "cssnano": "^5.1.7",
     "fs": "0.0.2",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
@@ -34,7 +34,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.5.0",
-    "npm-check-updates": "^12.5.4"
+    "npm-check-updates": "^12.5.9"
   },
   "browserslist": [
     "last 2 version",
