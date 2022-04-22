@@ -229,6 +229,17 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'constant' => 'WP_ANALYTICS_TRACKING_ID',
 				),
 			),
+			'google_ads_id'      => array(
+				'title'    => __( 'Google Ads ID', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_ANALYTICS_GOOGLE_ADS_ID',
+				),
+			),
 			'disable_optimize'   => array(
 				'title'    => __( 'Disable Google Optimize?', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
@@ -333,6 +344,20 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'desc' => '',
 				),
 			),
+			/*
+			// currently, only the jQuery version supports gtag.
+			'use_jquery'              => array(
+				'title'    => __( 'Use jQuery?', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-minimum-height',
+				'args'     => array(
+					'type'     => 'checkbox',
+					'desc'     => __( 'Check this box if you are already using jQuery. If not, leave it blank to use a different library.', 'wp-analytics-tracking-generator' ),
+					'constant' => '',
+				),
+			),*/
 			'minimum_height'          => array(
 				'title'    => __( 'Minimum height', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
@@ -341,7 +366,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-minimum-height',
 				'args'     => array(
 					'type'     => 'text',
-					'desc'     => 'Enter a pixel height for pages if applicable. Otherwise, 0 is the default.',
+					'desc'     => __( 'Enter a pixel height for pages if applicable. Otherwise, 0 is the default.', 'wp-analytics-tracking-generator' ),
 					'constant' => '',
 				),
 			),
@@ -352,7 +377,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'section'  => $section,
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-depth-elements',
 				'args'     => array(
-					'desc' => 'Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas.',
+					'desc' => __( 'Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas.', 'wp-analytics-tracking-generator' ),
 					'rows' => 5,
 					'cols' => '',
 				),
@@ -365,7 +390,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-percentage',
 				'args'     => array(
 					'type'  => 'select',
-					'desc'  => 'Setting this to false will cause the plugin to only track the elements above.',
+					'desc'  => __( 'Setting this to false will cause the plugin to only track the elements above.', 'wp-analytics-tracking-generator' ),
 					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
@@ -377,7 +402,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-timing',
 				'args'     => array(
 					'type'  => 'select',
-					'desc'  => 'Setting this to false will turn off User Timing events.',
+					'desc'  => __( 'Setting this to false will turn off User Timing events.', 'wp-analytics-tracking-generator' ),
 					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
@@ -389,7 +414,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-scroll-track-pixel-depth',
 				'args'     => array(
 					'type'  => 'select',
-					'desc'  => 'Setting this to false will turn off Pixel Depth events.',
+					'desc'  => __( 'Setting this to false will turn off Pixel Depth events.', 'wp-analytics-tracking-generator' ),
 					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
@@ -401,7 +426,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-scroll wp-analytics-generator-field-non-interaction',
 				'args'     => array(
 					'type'  => 'select',
-					'desc'  => 'Scroll events will not impact bounce rate if this value is true.',
+					'desc'  => __( 'Scroll events will not impact bounce rate if this value is true.', 'wp-analytics-tracking-generator' ),
 					'items' => $this->get_true_false_select( 'true' ),
 				),
 			),
@@ -459,7 +484,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'class'    => 'wp-analytics-generator-field-track-fragment',
 				'args'     => array(
 					'type' => 'checkbox',
-					'desc' => 'Checking this will cause the tracker to send a pageview event when a #hash link is clicked',
+					'desc' => __( 'Checking this will cause the tracker to send a pageview event when a #hash link is clicked', 'wp-analytics-tracking-generator' ),
 				),
 			),
 			'track_form_submissions'  => array(
@@ -471,17 +496,6 @@ class WP_Analytics_Tracking_Generator_Admin {
 				'args'     => array(
 					'type' => 'checkbox',
 					'desc' => '',
-				),
-			),
-			'track_adblocker_status'  => array(
-				'title'    => __( 'Track ad blocker status?', 'wp-analytics-tracking-generator' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'class'    => 'wp-analytics-generator-field-track-adblocker',
-				'args'     => array(
-					'type' => 'checkbox',
-					'desc' => 'If checked, this will create an "off" and an "on" event. Off is if an ad blocker is not detected',
 				),
 			),
 		);
@@ -693,16 +707,6 @@ class WP_Analytics_Tracking_Generator_Admin {
 			),
 			'use_hitcallback'                  => array(
 				'title'    => __( 'Use hitCallback to increase event accuracy?', 'wp-analytics-tracking-generator' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type' => 'checkbox',
-					'desc' => '',
-				),
-			),
-			'enable_force_ssl'                 => array(
-				'title'    => __( 'Enable Force SSL?', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,

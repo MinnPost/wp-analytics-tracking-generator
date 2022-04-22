@@ -6,7 +6,6 @@ const concat = require('gulp-concat');
 const cssnano = require('cssnano');
 const fs = require('fs');
 const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
 const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 const mqpacker = require( 'css-mqpacker' );
 const order = require( 'gulp-order' );
@@ -28,7 +27,7 @@ const config = {
   },
   scripts: {
     admin_src: './assets/js/src/admin/**/*.js',
-    front_end_src: [ './assets/js/src/front-end/**/*.js', './assets/js/src/vendor/**/*.js' ],
+    front_end_src: [ './assets/js/src/front-end/**/*.js' ],
     uglify: [ 'assets/js/*.js', '!assets/js/*.min.js' ],
     dest: './assets/js'
   },
@@ -62,26 +61,6 @@ function adminstyles() {
     }))
     .pipe(sourcemaps.write()) // Write the sourcemap files
     .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
-    .pipe(browserSync.stream());
-}
-
-function frontendstyles() {
-  return gulp.src(config.styles.front_end_src, { allowEmpty: true })
-    .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
-    .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
-    .pipe(sass()) // Compile
-    .on('error', sass.logError) // Error reporting
-    .pipe(postcss([
-      mqpacker( {
-        'sort': true
-      } ),
-      autoprefixer(),
-      cssnano( {
-        'safe': true // Use safe optimizations.
-    } ) // Minify
-    ]))
-    .pipe(sourcemaps.write()) // Write the sourcemap files
-    .pipe(gulp.dest(config.styles.front_end_dest)) // Drop the resulting CSS file in the specified dir
     .pipe(browserSync.stream());
 }
 

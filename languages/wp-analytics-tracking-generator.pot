@@ -1,4 +1,4 @@
-# Copyright (C) 2020 wp-analytics-tracking-generator
+# Copyright (C) 2022 wp-analytics-tracking-generator
 # This file is distributed under the same license as the wp-analytics-tracking-generator package.
 msgid ""
 msgstr ""
@@ -6,6 +6,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Econdig: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"MIME-Version: 1.0\n"
+"Project-Id-Version: wp-analytics-tracking-generator\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -38,119 +42,143 @@ msgid "Tracking ID"
 msgstr ""
 
 #: classes/class-wp-analytics-tracking-generator-admin.php:233
+msgid "Google Ads ID"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:244
 msgid "Disable Google Optimize?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:243
+#: classes/class-wp-analytics-tracking-generator-admin.php:254
 msgid "Google Optimize Container ID"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:254
+#: classes/class-wp-analytics-tracking-generator-admin.php:265
 msgid "Disable pageview tracking?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:264
+#: classes/class-wp-analytics-tracking-generator-admin.php:275
 msgid "Disable Analytics for these roles"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:326
+#: classes/class-wp-analytics-tracking-generator-admin.php:337
 msgid "Track page scroll depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:337
+#: classes/class-wp-analytics-tracking-generator-admin.php:362
 msgid "Minimum height"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:349
+#: classes/class-wp-analytics-tracking-generator-admin.php:369
+msgid "Enter a pixel height for pages if applicable. Otherwise, 0 is the default."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:374
 msgid "Scroll depth elements"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:361
+#: classes/class-wp-analytics-tracking-generator-admin.php:380
+msgid "Leave this empty if you do not need to track specific HTML elements. Otherwise, add jQuery selectors separated by commas."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:386
 msgid "Track scroll percentage?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:373
+#: classes/class-wp-analytics-tracking-generator-admin.php:393
+msgid "Setting this to false will cause the plugin to only track the elements above."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:398
 msgid "Track user timing?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:385
+#: classes/class-wp-analytics-tracking-generator-admin.php:405
+msgid "Setting this to false will turn off User Timing events."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:410
 msgid "Track pixel depth?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:397
+#: classes/class-wp-analytics-tracking-generator-admin.php:417
+msgid "Setting this to false will turn off Pixel Depth events."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:422
 msgid "Use nonInteraction?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:409
+#: classes/class-wp-analytics-tracking-generator-admin.php:429
+msgid "Scroll events will not impact bounce rate if this value is true."
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:434
 msgid "Track downloads, mailto, telephone, outbound links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:420
+#: classes/class-wp-analytics-tracking-generator-admin.php:445
 msgid "Download regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:432
+#: classes/class-wp-analytics-tracking-generator-admin.php:457
 msgid "Track affiliate links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:443
+#: classes/class-wp-analytics-tracking-generator-admin.php:468
 msgid "Affiliate regex"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:455
+#: classes/class-wp-analytics-tracking-generator-admin.php:480
 msgid "Track fragment links?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:466
+#: classes/class-wp-analytics-tracking-generator-admin.php:487
+msgid "Checking this will cause the tracker to send a pageview event when a #hash link is clicked"
+msgstr ""
+
+#: classes/class-wp-analytics-tracking-generator-admin.php:491
 msgid "Track form submissions?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:477
-msgid "Track ad blocker status?"
-msgstr ""
-
-#: classes/class-wp-analytics-tracking-generator-admin.php:536
+#: classes/class-wp-analytics-tracking-generator-admin.php:550
 msgid "Available Dimensions"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:554
+#: classes/class-wp-analytics-tracking-generator-admin.php:568
 msgid "Enter a global WordPress variable for each dimension you have in Analytics. You can also use the wp_analytics_tracking_generator_add_dimension hook."
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:559
+#: classes/class-wp-analytics-tracking-generator-admin.php:573
 msgid "Dimension "
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:634
+#: classes/class-wp-analytics-tracking-generator-admin.php:648
 msgid "Speed sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:645
+#: classes/class-wp-analytics-tracking-generator-admin.php:659
 msgid "User sample rate percentage"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:655
+#: classes/class-wp-analytics-tracking-generator-admin.php:669
 msgid "Exclude users with Do Not Track header?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:665
+#: classes/class-wp-analytics-tracking-generator-admin.php:679
 msgid "Enable remarketing, demographics, interest reports?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:675
+#: classes/class-wp-analytics-tracking-generator-admin.php:689
 msgid "Exclude events from bounce-rate and time on page?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:685
+#: classes/class-wp-analytics-tracking-generator-admin.php:699
 msgid "Enable enhanced link attribution?"
 msgstr ""
 
-#: classes/class-wp-analytics-tracking-generator-admin.php:695
+#: classes/class-wp-analytics-tracking-generator-admin.php:709
 msgid "Use hitCallback to increase event accuracy?"
-msgstr ""
-
-#: classes/class-wp-analytics-tracking-generator-admin.php:705
-msgid "Enable Force SSL?"
 msgstr ""
 
 #: templates/admin/settings.php:6

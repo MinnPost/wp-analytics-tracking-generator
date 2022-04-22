@@ -76,15 +76,20 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				$disable_pageview = get_option( $this->option_prefix . 'disable_pageview', false );
 				$disable_pageview = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
 				$property_id      = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
+				$google_ads_id    = defined( 'WP_ANALYTICS_GOOGLE_ADS_ID' ) ? WP_ANALYTICS_GOOGLE_ADS_ID : get_option( $this->option_prefix . 'google_ads_id', '' );
 
 				$disable_optimize = get_option( $this->option_prefix . 'disable_optimize', false );
 				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
 				$optimize_id      = defined( 'WP_ANALYTICS_OPTIMIZE_CONTAINER_ID' ) ? WP_ANALYTICS_OPTIMIZE_CONTAINER_ID : get_option( $this->option_prefix . 'optimize_id', '' );
 
+				$enable_extra_reports = get_option( $this->option_prefix . 'enable_extra_reports', false );
+				$enable_extra_reports = filter_var( $enable_extra_reports, FILTER_VALIDATE_BOOLEAN );
+
 				$custom_dimensions = $this->get_custom_dimensions();
 
 				// for gtagjs template. analyticsjs template includes optimize directly, according to settings.
-				if ( 'gtag.js' === $type ) {
+				// the value does not have a dot in it.
+				if ( 'gtagjs' === $type ) {
 					$tracking_config = array();
 					if ( $disable_pageview ) {
 						$tracking_config['send_page_view'] = false;
@@ -109,7 +114,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	* @return void
 	*/
 	public function scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.min.js', dirname( $this->file ) ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.min.js' ), true );
+		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.min.js', dirname( $this->file ) ), array( 'jquery', 'wp-hooks' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.min.js' ), true );
 
 		$settings = array();
 
@@ -121,9 +126,22 @@ class WP_Analytics_Tracking_Generator_Front_End {
 
 		// scroll depth settings
 		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
+		$use_jquery     = filter_var( get_option( $this->option_prefix . 'use_jquery', false ), FILTER_VALIDATE_BOOLEAN );
+		// as of April 2022, only the jQuery version works with gtag.
+		if ( 'gtagjs' === $analytics_type ) {
+			$use_jquery = true;
+		}
 		if ( true === $scroll_enabled ) {
-			$settings['scroll'] = array(
+
+			if ( true === $use_jquery ) {
+				wp_enqueue_script( $this->slug . '-scrolldepth', plugins_url( $this->slug . '/assets/js/vendor/jquery.scrolldepth.min.js', dirname( $this->file ) ), array( 'jquery', $this->slug . '-front-end' ), $this->version, true );
+			} else {
+				wp_enqueue_script( $this->slug . '-scrolldepth', plugins_url( $this->slug . '/assets/js/vendor/gascrolldepth.min.js', dirname( $this->file ) ), array( $this->slug . '-front-end' ), $this->version, true );
+			}
+
+			$scroll_settings = array(
 				'enabled'         => $scroll_enabled,
+				'use_jquery'      => $use_jquery,
 				'minimum_height'  => ( '' !== get_option( $this->option_prefix . 'minimum_height', 0 ) ) ? get_option( $this->option_prefix . 'minimum_height', 0 ) : 0,
 				'percentage'      => ( '' !== get_option( $this->option_prefix . 'track_scroll_percentage', true ) ) ? get_option( $this->option_prefix . 'track_scroll_percentage', true ) : true,
 				'user_timing'     => ( '' !== get_option( $this->option_prefix . 'track_user_timing', true ) ) ? get_option( $this->option_prefix . 'track_user_timing', true ) : true,
@@ -131,8 +149,11 @@ class WP_Analytics_Tracking_Generator_Front_End {
 				'non_interaction' => ( '' !== get_option( $this->option_prefix . 'non_interaction', true ) ) ? get_option( $this->option_prefix . 'non_interaction', true ) : true,
 			);
 			if ( ! empty( get_option( $this->option_prefix . 'scroll_depth_elements', array() ) ) ) {
-				$settings['scroll']['scroll_elements'] = get_option( $this->option_prefix . 'scroll_depth_elements', array() );
+				$scroll_settings['scroll_elements'] = get_option( $this->option_prefix . 'scroll_depth_elements', array() );
 			}
+			// otherwise, the booleans get messed up.
+			$localized_scroll_settings['scroll'] = $scroll_settings;
+			wp_localize_script( $this->slug . '-scrolldepth', 'analytics_scrolldepth_settings', $localized_scroll_settings );
 		}
 
 		// special links
@@ -166,14 +187,6 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		if ( true === $form_submits_enabled ) {
 			$settings['form_submissions'] = array(
 				'enabled' => $form_submits_enabled,
-			);
-		}
-
-		// ad blocker
-		$track_adblocker_enabled = filter_var( get_option( $this->option_prefix . 'track_adblocker_status', false ), FILTER_VALIDATE_BOOLEAN );
-		if ( true === $track_adblocker_enabled ) {
-			$settings['track_adblocker'] = array(
-				'enabled' => $track_adblocker_enabled,
 			);
 		}
 
