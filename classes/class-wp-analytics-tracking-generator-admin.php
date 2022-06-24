@@ -19,18 +19,18 @@ class WP_Analytics_Tracking_Generator_Admin {
 	protected $file;
 	protected $slug;
 	protected $settings;
-	//protected $cache;
+	// protected $cache;
 
 	/**
-	* Constructor which sets up admin pages
-	*
-	* @param string $option_prefix
-	* @param string $version
-	* @param string $file
-	* @param string $slug
-	* @param object $settings
-	* @throws \Exception
-	*/
+	 * Constructor which sets up admin pages
+	 *
+	 * @param string $option_prefix
+	 * @param string $version
+	 * @param string $file
+	 * @param string $slug
+	 * @param object $settings
+	 * @throws \Exception
+	 */
 	public function __construct( $option_prefix, $version, $file, $slug, $settings ) {
 
 		$this->option_prefix = $option_prefix;
@@ -38,9 +38,9 @@ class WP_Analytics_Tracking_Generator_Admin {
 		$this->file          = $file;
 		$this->slug          = $slug;
 		$this->settings      = $settings;
-		//$this->cache         = $cache;
+		// $this->cache         = $cache;
 
-		//$this->mp_mem_transients = $this->cache->mp_mem_transients;
+		// $this->mp_mem_transients = $this->cache->mp_mem_transients;
 
 		$this->tabs = $this->get_admin_tabs();
 
@@ -51,9 +51,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Create the action hooks to create the admin page(s)
-	*
-	*/
+	 * Create the action hooks to create the admin page(s)
+	 */
 	public function add_actions() {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
@@ -64,9 +63,8 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Create WordPress admin options page
-	*
-	*/
+	 * Create WordPress admin options page
+	 */
 	public function create_admin_menu() {
 		$title = __( 'Analytics Tracking', 'wp-analytics-tracking-generator' );
 		add_options_page( $title, $title, 'manage_options', $this->slug . '-admin', array( $this, 'show_admin_page' ) );
@@ -74,11 +72,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 
 	/**
-	* Create WordPress admin options page tabs
-	*
-	* @return array $tabs
-	*
-	*/
+	 * Create WordPress admin options page tabs
+	 *
+	 * @return array $tabs
+	 */
 	private function get_admin_tabs() {
 		$tabs = array(
 			'basic_settings'    => 'Basic Settings',
@@ -95,15 +92,15 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Display the admin settings page
-	*
-	* @return void
-	*/
+	 * Display the admin settings page
+	 *
+	 * @return void
+	 */
 	public function show_admin_page() {
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		?>
 		<div class="wrap">
-			<h1><?php _e( get_admin_page_title() , 'wp-analytics-tracking-generator' ); ?></h1>
+			<h1><?php _e( get_admin_page_title(), 'wp-analytics-tracking-generator' ); ?></h1>
 
 			<?php
 			$tabs = $this->tabs;
@@ -112,7 +109,7 @@ class WP_Analytics_Tracking_Generator_Admin {
 
 			switch ( $tab ) {
 				default:
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					require_once plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php';
 					break;
 			} // End switch().
 			?>
@@ -121,10 +118,11 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Render tabs for settings pages in admin
-	* @param array $tabs
-	* @param string $tab
-	*/
+	 * Render tabs for settings pages in admin
+	 *
+	 * @param array  $tabs
+	 * @param string $tab
+	 */
 	private function render_tabs( $tabs, $tab = '' ) {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
@@ -150,18 +148,18 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Register items for the settings api
-	* @return void
-	*
-	*/
+	 * Register items for the settings api
+	 *
+	 * @return void
+	 */
 	public function admin_settings_form() {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : $this->default_tab;
 
-		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-analytics-tracking-admin-settings.php' );
-		$settings = new WP_Analytics_Tracking_Admin_Settings;
+		require_once plugin_dir_path( __FILE__ ) . 'class-wp-analytics-tracking-admin-settings.php';
+		$settings = new WP_Analytics_Tracking_Admin_Settings();
 
 		$all_field_callbacks = array(
 			'text'       => array( $settings, 'display_input_field' ),
@@ -179,23 +177,23 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Admin styles. Load the CSS and/or JavaScript for the plugin's settings
-	*
-	* @return void
-	*/
+	 * Admin styles. Load the CSS and/or JavaScript for the plugin's settings
+	 *
+	 * @return void
+	 */
 	public function admin_scripts_and_styles() {
 		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/' . $this->slug . '-admin.min.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->version, true );
 		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/' . $this->slug . '-admin.min.css', dirname( __FILE__ ) ), array(), $this->version, 'all' );
 	}
 
 	/**
-	* Fields for the Basic Settings tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param array $callbacks
-	*/
+	 * Fields for the Basic Settings tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param array  $callbacks
+	 */
 	private function basic_settings( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -316,13 +314,13 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Fields for the Event Tracking tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param array $callbacks
-	*/
+	 * Fields for the Event Tracking tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param array  $callbacks
+	 */
 	private function event_tracking( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -530,13 +528,13 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Fields for the Custom Dimensions tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param array $callbacks
-	*/
+	 * Fields for the Custom Dimensions tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param array  $callbacks
+	 */
 	private function custom_dimensions( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -614,26 +612,26 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Fields for the Advanced Settings tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param array $callbacks
-	* things to track here:
-	* speed sample rate / user sample rate
-	* anonymize ips
-	* user opt out
-	* exclude users with Do Not Track header
-	* enable remarketing, demographics, interests reports
-	* exclude events from bounce rate and time on page calculation
-	* enable enhanced link attribution
-	* use hitcallback to increase event tracking accuracy
-	* enable force ssl
-	* enable cross domain
-	* list of domains to support
-	* cookie domain/name/expiration
-	*/
+	 * Fields for the Advanced Settings tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param array  $callbacks
+	 * things to track here:
+	 * speed sample rate / user sample rate
+	 * anonymize ips
+	 * user opt out
+	 * exclude users with Do Not Track header
+	 * enable remarketing, demographics, interests reports
+	 * exclude events from bounce rate and time on page calculation
+	 * enable enhanced link attribution
+	 * use hitcallback to increase event tracking accuracy
+	 * enable force ssl
+	 * enable cross domain
+	 * list of domains to support
+	 * cookie domain/name/expiration
+	 */
 	private function advanced_settings( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -747,11 +745,11 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Reusable <select> items with true and false, to mirror jquery settings
-	*
-	* @param string $default
-	* @return array $items
-	*/
+	 * Reusable <select> items with true and false, to mirror jquery settings
+	 *
+	 * @param string $default
+	 * @return array $items
+	 */
 	private function get_true_false_select( $default = '' ) {
 		$items = array(
 			'true'  => array(
@@ -778,10 +776,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Analytics trackers as setting field options
-	*
-	* @return array $items
-	*/
+	 * Analytics trackers as setting field options
+	 *
+	 * @return array $items
+	 */
 	private function get_tracker_options() {
 		$items    = array();
 		$trackers = $this->settings->get_analytics_tracker_types();
@@ -797,10 +795,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* WordPress user roles as setting field options
-	*
-	* @return array $items
-	*/
+	 * WordPress user roles as setting field options
+	 *
+	 * @return array $items
+	 */
 	private function get_role_options() {
 		$items = array();
 		$roles = get_editable_roles();
@@ -816,10 +814,10 @@ class WP_Analytics_Tracking_Generator_Admin {
 	}
 
 	/**
-	* Get options for custom dimension variables
-	*
-	* @return array $items
-	*/
+	 * Get options for custom dimension variables
+	 *
+	 * @return array $items
+	 */
 	private function get_dimension_variables() {
 		$items = array();
 		$vars  = $this->settings->get_dimension_variables();

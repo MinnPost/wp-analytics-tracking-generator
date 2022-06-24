@@ -19,18 +19,18 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	protected $file;
 	protected $slug;
 	protected $settings;
-	//protected $cache;
+	// protected $cache;
 
 	/**
-	* Constructor which sets up front end
-	*
-	* @param string $option_prefix
-	* @param string $version
-	* @param string $file
-	* @param string $slug
-	* @param object $settings
-	* @throws \Exception
-	*/
+	 * Constructor which sets up front end
+	 *
+	 * @param string $option_prefix
+	 * @param string $version
+	 * @param string $file
+	 * @param string $slug
+	 * @param object $settings
+	 * @throws \Exception
+	 */
 	public function __construct( $option_prefix, $version, $file, $slug, $settings ) {
 
 		$this->option_prefix = $option_prefix;
@@ -38,9 +38,9 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		$this->file          = $file;
 		$this->slug          = $slug;
 		$this->settings      = $settings;
-		//$this->cache         = $cache;
+		// $this->cache         = $cache;
 
-		//$this->mp_mem_transients = $this->cache->mp_mem_transients;
+		// $this->mp_mem_transients = $this->cache->mp_mem_transients;
 
 		$this->dimension_count = get_option( $this->option_prefix . 'dimension_total_count', $this->settings->dimension_count_default );
 		if ( '' === $this->dimension_count ) {
@@ -52,9 +52,8 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	}
 
 	/**
-	* Create the action hooks
-	*
-	*/
+	 * Create the action hooks
+	 */
 	public function add_actions() {
 		if ( ! is_admin() ) {
 			add_action( 'wp_head', array( $this, 'output_tracking_code' ), 99 );
@@ -65,9 +64,8 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	}
 
 	/**
-	* Output the tracking code on the page if allowed
-	*
-	*/
+	 * Output the tracking code on the page if allowed
+	 */
 	public function output_tracking_code() {
 		$show_analytics_code = $this->show_analytics_code();
 		if ( true === $show_analytics_code ) {
@@ -103,16 +101,16 @@ class WP_Analytics_Tracking_Generator_Front_End {
 					}
 				}
 
-				require_once( plugin_dir_path( $this->file ) . '/templates/front-end/tracking-code-' . $type . '.php' );
+				require_once plugin_dir_path( $this->file ) . '/templates/front-end/tracking-code-' . $type . '.php';
 			}
 		}
 	}
 
 	/**
-	* Front end styles. Load the CSS and/or JavaScript
-	*
-	* @return void
-	*/
+	 * Front end styles. Load the CSS and/or JavaScript
+	 *
+	 * @return void
+	 */
 	public function scripts_and_styles() {
 		wp_enqueue_script( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/js/' . $this->slug . '-front-end.min.js', dirname( $this->file ) ), array( 'jquery', 'wp-hooks' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/' . $this->slug . '-front-end.min.js' ), true );
 
@@ -191,15 +189,14 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		}
 
 		wp_localize_script( $this->slug . '-front-end', 'analytics_tracking_settings', $settings );
-		//wp_enqueue_style( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/css/' . $this->slug . '-front-end.min.css', dirname( $this->file ) ), array(), $this->version, 'all' );
+		// wp_enqueue_style( $this->slug . '-front-end', plugins_url( $this->slug . '/assets/css/' . $this->slug . '-front-end.min.css', dirname( $this->file ) ), array(), $this->version, 'all' );
 	}
 
 	/**
-	* Whether or not to show the analytics code on the current page to the current user
-	*
-	* @return bool $show_analytics_code
-	*
-	*/
+	 * Whether or not to show the analytics code on the current page to the current user
+	 *
+	 * @return bool $show_analytics_code
+	 */
 	private function show_analytics_code() {
 		$show_analytics_code = true;
 		$user_id             = get_current_user_id();
@@ -220,11 +217,10 @@ class WP_Analytics_Tracking_Generator_Front_End {
 	}
 
 	/**
-	* Custom dimensions
-	*
-	* @return array $custom_dimensions
-	*
-	*/
+	 * Custom dimensions
+	 *
+	 * @return array $custom_dimensions
+	 */
 	private function get_custom_dimensions() {
 		$custom_dimensions = array();
 		$i                 = 1;

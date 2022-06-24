@@ -19,13 +19,13 @@ class WP_Analytics_Tracking_Generator_Settings {
 	protected $slug;
 
 	/**
-	* Constructor which sets up admin pages
-	*
-	* @param string $option_prefix
-	* @param string $version
-	* @param string $slug
-	* @throws \Exception
-	*/
+	 * Constructor which sets up admin pages
+	 *
+	 * @param string $option_prefix
+	 * @param string $version
+	 * @param string $slug
+	 * @throws \Exception
+	 */
 	public function __construct( $option_prefix, $version, $slug ) {
 
 		$this->option_prefix = $option_prefix;
@@ -38,12 +38,11 @@ class WP_Analytics_Tracking_Generator_Settings {
 	}
 
 	/**
-	* Types of analytics trackers, and what they support
-	*
-	* @param string $key
-	* @return array $tracker_types
-	*
-	*/
+	 * Types of analytics trackers, and what they support
+	 *
+	 * @param string $key
+	 * @return array $tracker_types
+	 */
 	public function get_analytics_tracker_types( $key = '' ) {
 		$tracker_types = array(
 			'analyticsjs' => array(
@@ -69,12 +68,11 @@ class WP_Analytics_Tracking_Generator_Settings {
 	}
 
 	/**
-	* Variables we support for custom dimensions
-	*
-	* @param string $key
-	* @return array $dimension_variables
-	*
-	*/
+	 * Variables we support for custom dimensions
+	 *
+	 * @param string $key
+	 * @return array $dimension_variables
+	 */
 	public function get_dimension_variables( $key = '' ) {
 		$dimension_variables = array(
 			'author'     => array(

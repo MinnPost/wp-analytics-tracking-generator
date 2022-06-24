@@ -22,8 +22,8 @@ gtag('set', 'allow_ad_personalization_signals', false);
 <?php endif; ?>
 <?php if ( ! empty( $custom_dimensions ) ) : ?>
 gtag( 'set', {
-<?php foreach ( $custom_dimensions as $key => $value ) : ?>
-<?php if ( ! next( $custom_dimensions ) ) : ?>
+	<?php foreach ( $custom_dimensions as $key => $value ) : ?>
+		<?php if ( ! next( $custom_dimensions ) ) : ?>
 'dimension<?php echo esc_attr( $key ); ?>': '<?php echo esc_html( $value ); ?>'
 <?php else : ?>
 'dimension<?php echo esc_attr( $key ); ?>': '<?php echo esc_html( $value ); ?>',

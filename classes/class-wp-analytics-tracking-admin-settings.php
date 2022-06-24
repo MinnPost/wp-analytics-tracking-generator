@@ -16,11 +16,11 @@ class WP_Analytics_Tracking_Admin_Settings {
 	public function __construct() {}
 
 	/**
-	* Default display for <input> fields
-	*
-	* @param array $args
-	* @return string $field
-	*/
+	 * Default display for <input> fields
+	 *
+	 * @param array $args
+	 * @return string $field
+	 */
 	public function display_input_field( $args ) {
 
 		$field = '';
@@ -76,12 +76,12 @@ class WP_Analytics_Tracking_Admin_Settings {
 	}
 
 	/**
-	* Display for multiple checkboxes
-	* Above method can handle a single checkbox as it is
-	*
-	* @param array $args
-	* @return string $field
-	*/
+	 * Display for multiple checkboxes
+	 * Above method can handle a single checkbox as it is
+	 *
+	 * @param array $args
+	 * @return string $field
+	 */
 	public function display_checkboxes( $args ) {
 
 		$field = '';
@@ -144,11 +144,11 @@ class WP_Analytics_Tracking_Admin_Settings {
 	}
 
 	/**
-	* Display for a dropdown/select
-	*
-	* @param array $args
-	* @return string $field
-	*/
+	 * Display for a dropdown/select
+	 *
+	 * @param array $args
+	 * @return string $field
+	 */
 	public function display_select( $args ) {
 
 		$field = '';
@@ -206,10 +206,10 @@ class WP_Analytics_Tracking_Admin_Settings {
 	}
 
 	/**
-	* Display for a textarea
-	*
-	* @param array $args
-	*/
+	 * Display for a textarea
+	 *
+	 * @param array $args
+	 */
 	public function display_textarea( $args ) {
 		$id    = $args['label_for'];
 		$name  = $args['name'];
@@ -253,11 +253,11 @@ class WP_Analytics_Tracking_Admin_Settings {
 	}
 
 	/**
-	* Default display for <a href> links
-	*
-	* @param array $args
-	* @return string $field
-	*/
+	 * Default display for <a href> links
+	 *
+	 * @param array $args
+	 * @return string $field
+	 */
 	public function display_link( $args ) {
 
 		$field = '';

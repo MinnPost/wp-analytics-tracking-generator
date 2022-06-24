@@ -13,68 +13,66 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 class WP_Analytics_Tracking_Generator {
 
 	/**
-	* @var string
-	* The plugin version
-	*/
+	 * @var string
+	 * The plugin version
+	 */
 	private $version;
 
 	/**
-	* @var string
-	* This file
-	*/
+	 * @var string
+	 * This file
+	 */
 	private $file;
 
 	/**
-	* @var string
-	* The plugin's slug
-	*/
+	 * @var string
+	 * The plugin's slug
+	 */
 	protected $slug;
 
 	/**
-	* @var string
-	* The plugin's prefix for saving options
-	*/
+	 * @var string
+	 * The plugin's prefix for saving options
+	 */
 	protected $option_prefix;
 
 	/**
-	* @var object
-	* Load and initialize the WP_Analytics_Tracking_Generator_Cache class
-	*/
-	//public $cache;
+	 * @var object
+	 * Load and initialize the WP_Analytics_Tracking_Generator_Cache class
+	 */
+	// public $cache;
 
 	/**
-	* @var object
-	* Load and initialize the WP_Analytics_Tracking_Generator_Settings class
-	*/
+	 * @var object
+	 * Load and initialize the WP_Analytics_Tracking_Generator_Settings class
+	 */
 	public $settings;
 
 	/**
-	* @var object
-	* Load and initialize the WP_Analytics_Tracking_Generator_Admin class
-	*/
+	 * @var object
+	 * Load and initialize the WP_Analytics_Tracking_Generator_Admin class
+	 */
 	public $admin;
 
 	/**
-	* @var object
-	* Load and initialize the WP_Analytics_Tracking_Generator_Front_End class
-	*/
+	 * @var object
+	 * Load and initialize the WP_Analytics_Tracking_Generator_Front_End class
+	 */
 	public $front_end;
 
 	/**
 	 * @var object
 	 * Static property to hold an instance of the class; this seems to make it reusable
-	 *
 	 */
 	static $instance = null;
 
 	/**
-	* Load the static $instance property that holds the instance of the class.
-	* This instance makes the class reusable by other plugins
-	*
-	* @return object
-	*
-	*/
-	static public function get_instance() {
+	 * Load the static $instance property that holds the instance of the class.
+	 * This instance makes the class reusable by other plugins
+	 *
+	 * @return object
+	 */
+	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new WP_Analytics_Tracking_Generator();
 		}
@@ -94,7 +92,7 @@ class WP_Analytics_Tracking_Generator {
 		$this->option_prefix = 'wp_analytics_tracking_generator_';
 
 		// wp cache settings - can't imagine we'll need that
-		//$this->cache = $this->cache();
+		// $this->cache = $this->cache();
 		// settings outside the ui
 		$this->settings = $this->settings();
 		// admin settings
@@ -107,9 +105,8 @@ class WP_Analytics_Tracking_Generator {
 	}
 
 	/**
-	* Do actions
-	*
-	*/
+	 * Do actions
+	 */
 	private function add_actions() {
 		add_action( 'plugins_loaded', array( $this, 'textdomain' ) );
 	}
@@ -120,7 +117,7 @@ class WP_Analytics_Tracking_Generator {
 	 * @return object $cache
 	 */
 	public function cache() {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-cache.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-cache.php';
 		$cache = new WP_Analytics_Tracking_Generator_Cache( $this->option_prefix, $this->version, $this->file, $this->slug );
 		return $cache;
 	}
@@ -131,7 +128,7 @@ class WP_Analytics_Tracking_Generator {
 	 * @return object $settings
 	 */
 	public function settings() {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-settings.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-settings.php';
 		$settings = new WP_Analytics_Tracking_Generator_Settings( $this->option_prefix, $this->version, $this->file, $this->slug );
 		return $settings;
 	}
@@ -142,7 +139,7 @@ class WP_Analytics_Tracking_Generator {
 	 * @return object $admin
 	 */
 	public function admin() {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-admin.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-admin.php';
 		$admin = new WP_Analytics_Tracking_Generator_Admin( $this->option_prefix, $this->version, $this->file, $this->slug, $this->settings );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 		return $admin;
@@ -154,7 +151,7 @@ class WP_Analytics_Tracking_Generator {
 	 * @return object $front_end
 	 */
 	public function front_end() {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-front-end.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-wp-analytics-tracking-generator-front-end.php';
 		$front_end = new WP_Analytics_Tracking_Generator_Front_End( $this->option_prefix, $this->version, $this->file, $this->slug, $this->settings );
 		return $front_end;
 	}
@@ -169,13 +166,13 @@ class WP_Analytics_Tracking_Generator {
 	}
 
 	/**
-	* Display a Settings link on the main Plugins page
-	*
-	* @param array $links
-	* @param string $file
-	* @return array $links
-	* These are the links that go with this plugin's entry
-	*/
+	 * Display a Settings link on the main Plugins page
+	 *
+	 * @param array  $links
+	 * @param string $file
+	 * @return array $links
+	 * These are the links that go with this plugin's entry
+	 */
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( __FILE__ ) === $file ) {
 			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '-admin">' . __( 'Settings', 'wp-analytics-tracking-generator' ) . '</a>';

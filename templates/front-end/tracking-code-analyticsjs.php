@@ -17,7 +17,7 @@ ga( 'create', '<?php echo esc_attr( $property_id ); ?>', 'auto' );
 ga( 'require', '<?php echo esc_attr( $optimize_id ); ?>' );
 <?php endif; ?>
 <?php if ( ! empty( $custom_dimensions ) ) : ?>
-<?php foreach ( $custom_dimensions as $key => $value ) : ?>
+	<?php foreach ( $custom_dimensions as $key => $value ) : ?>
 ga( 'set', 'dimension<?php echo esc_attr( $key ); ?>', '<?php echo esc_html( $value ); ?>' );
 <?php endforeach; ?>
 <?php endif; ?>
@@ -31,7 +31,7 @@ ga('send', 'pageview');
 <script> window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date()); gtag('config', '<?php echo esc_attr( $google_ads_id ); ?>');
-<?php if ( false === $enable_extra_reports ) : ?>
+	<?php if ( false === $enable_extra_reports ) : ?>
 gtag('set', 'allow_ad_personalization_signals', false);
 <?php endif; ?>
 </script>
