@@ -97,7 +97,7 @@ class WP_Analytics_Tracking_Generator_Front_End {
 					}
 					$tracking_config_json = '{}';
 					if ( ! empty( $tracking_config ) ) {
-						$tracking_config_json = json_encode( $tracking_config );
+						$tracking_config_json = wp_json_encode( $tracking_config );
 					}
 				}
 
@@ -206,13 +206,15 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			$user_data         = get_userdata( $user_id );
 			$user_roles        = $user_data->roles;
 			$disable_for_roles = get_option( $this->option_prefix . 'disable_for_roles', array() );
-			$user_roles_block  = array_intersect( $user_roles, $disable_for_roles );
-			if ( empty( $user_roles_block ) ) {
-				return $show_analytics_code;
-			} else {
+			if ( '' === $disable_for_roles ) {
+				$disable_for_roles = array();
+			}
+			$user_roles_block = array_intersect( $user_roles, $disable_for_roles );
+			if ( ! empty( $user_roles_block ) ) {
 				$show_analytics_code = false;
 			}
 		}
+		$show_analytics_code = apply_filters( 'wp_analytics_tracking_generator_show_analytics_code', $show_analytics_code );
 		return $show_analytics_code;
 	}
 
