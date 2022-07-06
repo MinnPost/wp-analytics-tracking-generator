@@ -75,7 +75,7 @@ function wpAnalyticsTrackingEvent(
 		// Google Analytics property with tracking ID GA_MEASUREMENT_ID.
 		// example: ga('send', 'event', 'Videos', 'play', 'Fall Campaign');
 		// noninteraction seems to have been working like this in analytics.js.
-		if (non_interaction == 1) {
+		if (non_interaction === 1) {
 			value = { nonInteraction: 1 };
 		}
 		if ('undefined' === typeof value) {
@@ -290,6 +290,7 @@ function wpAnalyticsTrackingSetup() {
 	) {
 		// any link could be an affiliate, i guess?
 		$('a').click(function () {
+			const url = this.href;
 			// track affiliates
 			if ('' !== analytics_tracking_settings.affiliate.affiliate_regex) {
 				const checkAffiliate = new RegExp(
@@ -317,14 +318,14 @@ function wpAnalyticsTrackingSetup() {
 		'undefined' !== typeof analytics_tracking_settings.fragment &&
 		true === analytics_tracking_settings.fragment.enabled
 	) {
-		window.onhashchange = function (event) {
-			const fragment_url =
+		window.onhashchange = function () {
+			const fragmentUrl =
 				location.pathname + location.search + location.hash;
 			if ('gtag' === version) {
-				gtag('set', 'page_path', fragment_url);
+				gtag('set', 'page_path', fragmentUrl);
 				gtag('event', 'page_view');
 			} else if ('ga' === version) {
-				ga('send', 'pageview', fragment_url);
+				ga('send', 'pageview', fragmentUrl);
 			}
 		};
 	}
@@ -340,7 +341,7 @@ function wpAnalyticsTrackingSetup() {
 		'undefined' !== typeof analytics_tracking_settings.form_submissions &&
 		true === analytics_tracking_settings.form_submissions.enabled
 	) {
-		$('form').submit(function (f) {
+		$('form').submit(function () {
 			const button =
 				$(this).data('button') ||
 				$('input[type="submit"], button[type="submit"]').get(0);

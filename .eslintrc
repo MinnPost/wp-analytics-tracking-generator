@@ -5,6 +5,10 @@
         "jquery": true
     },
     "globals": {
-		"ga": true
+		"ga": true,
+        "gtag": true,
+        "analytics_scrolldepth_settings": true,
+        "gascrolldepth": true,
+        "analytics_tracking_settings": true
 	}
 }
