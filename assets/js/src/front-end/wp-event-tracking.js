@@ -135,6 +135,38 @@ function wpAnalyticsTrackingSetup() {
 		// if we're using ga, we need to tell the plugin
 		if ('gtag' !== version) {
 			scrollDepthSettings.gaGlobal = 'ga';
+		} else {
+			// in gtag, we set our own callback so we can deal with Google Analytics 4.
+			scrollDepthSettings.eventHandler = function(data) {
+				//console.log(data);
+
+				/* previous default
+				gtag('event', action, {
+					'event_category': 'Scroll Depth',
+					'event_label': label,
+					'value': 1,
+					'non_interaction': options.nonInteraction
+				});*/
+
+				/* parameters
+				function wpAnalyticsTrackingEvent(
+					type,
+					category,
+					action,
+					label,
+					value,
+					non_interaction
+				) */
+
+				wpAnalyticsTrackingEvent(
+					'event',
+					data.eventCategory,
+					data.eventAction,
+					data.eventLabel,
+					data.eventValue,
+					data.eventNonInteraction
+				);
+			}
 		}
 
 		// value is a string
