@@ -68,6 +68,24 @@ class WP_Analytics_Tracking_Generator_Settings {
 	}
 
 	/**
+	 * Types of analytics code that can be embedded
+	 *
+	 * @param string $key
+	 * @return array $tracker_codes
+	 */
+	public function get_analytics_tracker_codes( $key = '' ) {
+		$tracker_codes = array(
+			'universal' => array(
+				'name'     => 'Universal Analytics',
+			),
+			'ga4'      => array(
+				'name'     => 'Google Analytics 4',
+			),
+		);
+		return $tracker_codes;
+	}
+
+	/**
 	 * Variables we support for custom dimensions
 	 *
 	 * @param string $key

@@ -71,10 +71,12 @@ class WP_Analytics_Tracking_Generator_Front_End {
 		if ( true === $show_analytics_code ) {
 			$type = get_option( $this->option_prefix . 'tracking_code_type', '' );
 			if ( '' !== $type ) {
-				$disable_pageview = get_option( $this->option_prefix . 'disable_pageview', false );
-				$disable_pageview = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
-				$property_id      = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
-				$google_ads_id    = defined( 'WP_ANALYTICS_GOOGLE_ADS_ID' ) ? WP_ANALYTICS_GOOGLE_ADS_ID : get_option( $this->option_prefix . 'google_ads_id', '' );
+				$disable_pageview       = get_option( $this->option_prefix . 'disable_pageview', false );
+				$disable_pageview       = filter_var( $disable_pageview, FILTER_VALIDATE_BOOLEAN );
+				$property_id            = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
+				$property_id_ga4        = defined( 'WP_ANALYTICS_GA4_TRACKING_ID' ) ? WP_ANALYTICS_GA4_TRACKING_ID : get_option( $this->option_prefix . 'property_id_ga4', '' );
+				$tracking_codes_include = get_option( $this->option_prefix . 'tracking_codes_include', array() );
+				$google_ads_id          = defined( 'WP_ANALYTICS_GOOGLE_ADS_ID' ) ? WP_ANALYTICS_GOOGLE_ADS_ID : get_option( $this->option_prefix . 'google_ads_id', '' );
 
 				$disable_optimize = get_option( $this->option_prefix . 'disable_optimize', false );
 				$disable_optimize = filter_var( $disable_optimize, FILTER_VALIDATE_BOOLEAN );
@@ -122,6 +124,10 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			$settings['analytics_type'] = $analytics_type;
 		}
 
+		// tracker id values. this is how we identify which version or versions are running. ultimately universal will go away and ga4 will remain, but for the time being we will run both.
+		$settings['property_id']     = defined( 'WP_ANALYTICS_TRACKING_ID' ) ? WP_ANALYTICS_TRACKING_ID : get_option( $this->option_prefix . 'property_id', '' );
+		$settings['property_id_ga4'] = defined( 'WP_ANALYTICS_GA4_TRACKING_ID' ) ? WP_ANALYTICS_GA4_TRACKING_ID : get_option( $this->option_prefix . 'property_id_ga4', '' );
+
 		// scroll depth settings
 		$scroll_enabled = filter_var( get_option( $this->option_prefix . 'track_scroll_depth', false ), FILTER_VALIDATE_BOOLEAN );
 		$use_jquery     = filter_var( get_option( $this->option_prefix . 'use_jquery', false ), FILTER_VALIDATE_BOOLEAN );
@@ -153,6 +159,8 @@ class WP_Analytics_Tracking_Generator_Front_End {
 			$localized_scroll_settings['scroll'] = $scroll_settings;
 			wp_localize_script( $this->slug . '-scrolldepth', 'analytics_scrolldepth_settings', $localized_scroll_settings );
 		}
+
+		// todo: check each of the below items and filter out ga4 vs universal ones.
 
 		// special links
 		$special_links_enabled = filter_var( get_option( $this->option_prefix . 'track_special_links', false ), FILTER_VALIDATE_BOOLEAN );

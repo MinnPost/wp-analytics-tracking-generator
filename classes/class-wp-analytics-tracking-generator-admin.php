@@ -227,6 +227,29 @@ class WP_Analytics_Tracking_Generator_Admin {
 					'constant' => 'WP_ANALYTICS_TRACKING_ID',
 				),
 			),
+			'property_id_ga4'    => array(
+				'title'    => __( 'Tracking ID for GA4', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'desc'     => '',
+					'constant' => 'WP_ANALYTICS_GA4_TRACKING_ID',
+				),
+			),
+			'tracking_codes_include' => array(
+				'title'    => __( 'Tracking Codes to Include', 'wp-analytics-tracking-generator' ),
+				'callback' => $callbacks['checkboxes'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'checkboxes',
+					'desc'     => '',
+					'constant' => '',
+					'items'    => $this->get_tracker_codes(),
+				),
+			),
 			'google_ads_id'      => array(
 				'title'    => __( 'Google Ads ID', 'wp-analytics-tracking-generator' ),
 				'callback' => $callbacks['text'],
@@ -783,6 +806,25 @@ class WP_Analytics_Tracking_Generator_Admin {
 	private function get_tracker_options() {
 		$items    = array();
 		$trackers = $this->settings->get_analytics_tracker_types();
+		foreach ( $trackers as $key => $tracker ) {
+			$items[] = array(
+				'id'    => $key,
+				'value' => $key,
+				'text'  => $tracker['name'],
+				'desc'  => '',
+			);
+		}
+		return $items;
+	}
+
+	/**
+	 * Which tracking code versions to include on the site
+	 *
+	 * @return array $items
+	 */
+	private function get_tracker_codes() {
+		$items    = array();
+		$trackers = $this->settings->get_analytics_tracker_codes();
 		foreach ( $trackers as $key => $tracker ) {
 			$items[] = array(
 				'id'    => $key,
